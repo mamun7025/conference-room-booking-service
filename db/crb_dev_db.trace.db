@@ -1,0 +1,300 @@
+2024-03-23 19:24:29.252290+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "USE SCHEMA [*]CRB_DEV_DB"; SQL statement:
+USE SCHEMA CRB_DEV_DB [42000-224]
+2024-03-23 22:33:18.773640+04:00 jdbc[64]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DROP TABLE CONFERENCE_ROOM\000d\000a\000d\000a[*]CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM\000d\000a(\000d\000a    ID                  BIGINT AUTO_INCREMENT PRIMARY KEY,\000d\000a    NAME                VARCHAR(50) NOT NULL             ,\000d\000a    CODE                VARCHAR(3) NOT NULL              ,\000d\000a    CAPACITY            INT NOT NULL                     , -- (people)\000d\000a    SLOT_INTERVAL       INT NOT NULL                     , -- (minutes)\000d\000a    WORKING_HOUR_WINDOW VARCHAR(50) NOT NULL\000d\000a)"; SQL statement:
+DROP TABLE CONFERENCE_ROOM
+
+CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM
+(
+    ID                  BIGINT AUTO_INCREMENT PRIMARY KEY,
+    NAME                VARCHAR(50) NOT NULL             ,
+    CODE                VARCHAR(3) NOT NULL              ,
+    CAPACITY            INT NOT NULL                     , -- (people)
+    SLOT_INTERVAL       INT NOT NULL                     , -- (minutes)
+    WORKING_HOUR_WINDOW VARCHAR(50) NOT NULL
+) [42000-224]
+2024-03-23 23:28:43.592187+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Constraint "FK_CONFERENCE_ROOM_ID" already exists; SQL statement:
+CREATE TABLE IF NOT EXISTS MAINTENANCE_SETTINGS ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, CONFERENCE_ROOM_ID BIGINT , MAINTENANCE_SLOT VARCHAR(20) NOT NULL , CONSTRAINT FK_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID) ) [90045-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.ddl.AlterTableAddConstraint.tryUpdate(AlterTableAddConstraint.java:111)
+	at org.h2.command.ddl.AlterTableAddConstraint.update(AlterTableAddConstraint.java:74)
+	at org.h2.command.ddl.AlterTable.update(AlterTable.java:46)
+	at org.h2.command.ddl.CommandWithColumns.createConstraints(CommandWithColumns.java:83)
+	at org.h2.command.ddl.CreateTable.update(CreateTable.java:134)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.springframework.jdbc.datasource.init.ScriptUtils.executeSqlScript(ScriptUtils.java:261)
+	at org.springframework.jdbc.datasource.init.ResourceDatabasePopulator.populate(ResourceDatabasePopulator.java:254)
+	at org.springframework.jdbc.datasource.init.DatabasePopulatorUtils.execute(DatabasePopulatorUtils.java:54)
+	at org.springframework.boot.jdbc.init.DataSourceScriptDatabaseInitializer.runScripts(DataSourceScriptDatabaseInitializer.java:87)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.runScripts(AbstractScriptDatabaseInitializer.java:146)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.applyScripts(AbstractScriptDatabaseInitializer.java:108)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.applySchemaScripts(AbstractScriptDatabaseInitializer.java:98)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.initializeDatabase(AbstractScriptDatabaseInitializer.java:76)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.afterPropertiesSet(AbstractScriptDatabaseInitializer.java:66)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:313)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1234)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:952)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.mamun25dev.crbservice.CrbServiceApplication.main(CrbServiceApplication.java:10)
+2024-03-23 23:28:43.601186+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Constraint "FK_CONFERENCE_ROOM_ID" already exists; SQL statement:
+CREATE TABLE IF NOT EXISTS ROOM_BOOKING_HISTORY ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, CONFERENCE_ROOM_ID BIGINT , MEETING_TITLE VARCHAR(20) NOT NULL , CONATCT_NUMBER VARCHAR(20) NOT NULL , CONATCT_EMAIL VARCHAR(20) NOT NULL , NO_OF_PARTICIPANTS INT NOT NULL , START_TIME INT NOT NULL , END_TIME INT NOT NULL , SLOT_IDS INT NOT NULL , CREATED_BY INT NOT NULL , CREATED_DATE INT NOT NULL , CONSTRAINT FK_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID) ) [90045-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.ddl.AlterTableAddConstraint.tryUpdate(AlterTableAddConstraint.java:111)
+	at org.h2.command.ddl.AlterTableAddConstraint.update(AlterTableAddConstraint.java:74)
+	at org.h2.command.ddl.AlterTable.update(AlterTable.java:46)
+	at org.h2.command.ddl.CommandWithColumns.createConstraints(CommandWithColumns.java:83)
+	at org.h2.command.ddl.CreateTable.update(CreateTable.java:134)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.springframework.jdbc.datasource.init.ScriptUtils.executeSqlScript(ScriptUtils.java:261)
+	at org.springframework.jdbc.datasource.init.ResourceDatabasePopulator.populate(ResourceDatabasePopulator.java:254)
+	at org.springframework.jdbc.datasource.init.DatabasePopulatorUtils.execute(DatabasePopulatorUtils.java:54)
+	at org.springframework.boot.jdbc.init.DataSourceScriptDatabaseInitializer.runScripts(DataSourceScriptDatabaseInitializer.java:87)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.runScripts(AbstractScriptDatabaseInitializer.java:146)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.applyScripts(AbstractScriptDatabaseInitializer.java:108)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.applySchemaScripts(AbstractScriptDatabaseInitializer.java:98)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.initializeDatabase(AbstractScriptDatabaseInitializer.java:76)
+	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.afterPropertiesSet(AbstractScriptDatabaseInitializer.java:66)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:313)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1234)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:952)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.mamun25dev.crbservice.CrbServiceApplication.main(CrbServiceApplication.java:10)
+2024-03-23 23:31:29.744595+04:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Constraint "FK_CONFERENCE_ROOM_ID" already exists; SQL statement:
+CREATE TABLE IF NOT EXISTS MAINTENANCE_SETTINGS
+(
+    ID                  BIGINT AUTO_INCREMENT PRIMARY KEY,
+    CONFERENCE_ROOM_ID  BIGINT                           ,
+    MAINTENANCE_SLOT    VARCHAR(20) NOT NULL             ,
+    CONSTRAINT FK_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID)
+) [90045-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.ddl.AlterTableAddConstraint.tryUpdate(AlterTableAddConstraint.java:111)
+	at org.h2.command.ddl.AlterTableAddConstraint.update(AlterTableAddConstraint.java:74)
+	at org.h2.command.ddl.AlterTable.update(AlterTable.java:46)
+	at org.h2.command.ddl.CommandWithColumns.createConstraints(CommandWithColumns.java:83)
+	at org.h2.command.ddl.CreateTable.update(CreateTable.java:134)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:169)
+	at org.h2.command.Command.executeUpdate(Command.java:256)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1345)
+	at org.h2.server.web.WebApp.query(WebApp.java:1143)
+	at org.h2.server.web.WebApp.query(WebApp.java:1119)
+	at org.h2.server.web.WebApp.process(WebApp.java:245)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:177)
+	at org.h2.server.web.JakartaWebServlet.doGet(JakartaWebServlet.java:129)
+	at org.h2.server.web.JakartaWebServlet.doPost(JakartaWebServlet.java:166)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2024-03-24 00:35:00.260739+04:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]description CONFERENCE_ROOM"; expected "DELETE, DROP"; SQL statement:
+description CONFERENCE_ROOM [42001-224]
+2024-03-24 00:40:03.097278+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CREATE TABLE CONFERENCE_ROOM"; SQL statement:
+SHOW CREATE TABLE CONFERENCE_ROOM [42000-224]
+2024-03-24 00:40:23.948907+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]TABLE CONFERENCE_ROOM"; SQL statement:
+SHOW TABLE CONFERENCE_ROOM [42000-224]
+2024-03-24 00:40:28.876489+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CONFERENCE_ROOM"; SQL statement:
+SHOW CONFERENCE_ROOM [42000-224]
+2024-03-24 00:42:47.004110+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CONFERENCE_ROOM"; SQL statement:
+SHOW CONFERENCE_ROOM [42000-224]
+2024-03-24 00:42:57.310545+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CONFERENCE_ROOM"; SQL statement:
+SHOW CONFERENCE_ROOM [42000-224]
+2024-03-24 00:42:57.311543+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW TABLES [*]CONFERENCE_ROOM"; SQL statement:
+SHOW TABLES CONFERENCE_ROOM [42000-224]
+2024-03-24 00:43:33.488149+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CONFERENCE_ROOM"; SQL statement:
+SHOW CONFERENCE_ROOM [42000-224]
+2024-03-24 00:44:13.355658+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CONFERENCE_ROOM"; SQL statement:
+SHOW CONFERENCE_ROOM [42000-224]
+2024-03-24 00:44:13.357659+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW COLUMNS FROM CONFERENCE_ROOM \000d\000a[*]SHOW COLUMNS FROM ROOM_BOOKING_HISTORY"; SQL statement:
+SHOW COLUMNS FROM CONFERENCE_ROOM 
+SHOW COLUMNS FROM ROOM_BOOKING_HISTORY [42000-224]
+2024-03-24 00:44:32.989274+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CONFERENCE_ROOM"; SQL statement:
+SHOW CONFERENCE_ROOM [42000-224]
+2024-03-24 00:44:32.991272+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW COLUMNS FROM CONFERENCE_ROOM \000d\000a\000d\000a[*]SHOW COLUMNS FROM ROOM_BOOKING_HISTORY"; SQL statement:
+SHOW COLUMNS FROM CONFERENCE_ROOM 
+
+SHOW COLUMNS FROM ROOM_BOOKING_HISTORY [42000-224]
+2024-03-24 00:44:37.012232+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CONFERENCE_ROOM"; SQL statement:
+SHOW CONFERENCE_ROOM [42000-224]
+2024-03-24 00:44:37.015233+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW COLUMNS FROM CONFERENCE_ROOM \000d\000a\000d\000a[*]SHOW COLUMNS FROM ROOM_BOOKING_HISTORY"; SQL statement:
+SHOW COLUMNS FROM CONFERENCE_ROOM 
+
+SHOW COLUMNS FROM ROOM_BOOKING_HISTORY [42000-224]
+2024-03-24 00:47:29.115889+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CONFERENCE_ROOM"; SQL statement:
+SHOW CONFERENCE_ROOM [42000-224]
+2024-03-24 00:47:33.866577+04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SHOW [*]CONFERENCE_ROOM"; SQL statement:
+SHOW CONFERENCE_ROOM [42000-224]
+2024-03-24 00:56:10.722765+04:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM ROOM_BOOKING_HISTORY \000d\000a\000d\000aSHOW [*]COLUMNS FROM ROOM_BOOKING_HISTORY"; SQL statement:
+SELECT * FROM ROOM_BOOKING_HISTORY 
+
+SHOW COLUMNS FROM ROOM_BOOKING_HISTORY [42000-224]
+2024-03-24 01:21:25.395334+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, NAME VARCHAR(50) NOT NULL , CODE VARCHAR(3) NOT NULL , CAPACITY INT NOT NULL , SLOT_INTERVAL INT NOT NULL , WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL [*]CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE )"; expected "DEFAULT, GENERATED, ON UPDATE, DEFAULT ON NULL, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, NAME VARCHAR(50) NOT NULL , CODE VARCHAR(3) NOT NULL , CAPACITY INT NOT NULL , SLOT_INTERVAL INT NOT NULL , WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE ) [42001-224]
+2024-03-24 01:21:25.399333+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM_SLOTS ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, CONFERENCE_ROOM_ID BIGINT , SLOT_DATE VARCHAR(20) NOT NULL , SLOT_TIME_WINDOW VARCHAR(20) NOT NULL , STATUS INT NOT NULL , CONSTRAINT FK_1_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID) [*]CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE )"; expected "INDEX, ON, NOT DEFERRABLE, DEFERRABLE, NOCHECK, CHECK, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM_SLOTS ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, CONFERENCE_ROOM_ID BIGINT , SLOT_DATE VARCHAR(20) NOT NULL , SLOT_TIME_WINDOW VARCHAR(20) NOT NULL , STATUS INT NOT NULL , CONSTRAINT FK_1_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID) CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE ) [42001-224]
+2024-03-24 01:21:25.400333+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS MAINTENANCE_SETTINGS ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, CONFERENCE_ROOM_ID BIGINT , MAINTENANCE_SLOT VARCHAR(20) NOT NULL , CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE CONSTRAINT FK_2_CONFERENCE_ROOM_ID [*]FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID) )"; expected "PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES"; SQL statement:
+CREATE TABLE IF NOT EXISTS MAINTENANCE_SETTINGS ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, CONFERENCE_ROOM_ID BIGINT , MAINTENANCE_SLOT VARCHAR(20) NOT NULL , CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE CONSTRAINT FK_2_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID) ) [42001-224]
+2024-03-24 01:23:12.813938+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, NAME VARCHAR(50) NOT NULL , CODE VARCHAR(3) NOT NULL , CAPACITY INT NOT NULL , SLOT_INTERVAL INT NOT NULL , WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL [*]CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE )"; expected "DEFAULT, GENERATED, ON UPDATE, DEFAULT ON NULL, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, NAME VARCHAR(50) NOT NULL , CODE VARCHAR(3) NOT NULL , CAPACITY INT NOT NULL , SLOT_INTERVAL INT NOT NULL , WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE ) [42001-224]
+2024-03-24 01:23:51.173185+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, NAME VARCHAR(50) NOT NULL , CODE VARCHAR(3) NOT NULL , CAPACITY INT NOT NULL , SLOT_INTERVAL INT NOT NULL , WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL [*]CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE )"; expected "DEFAULT, GENERATED, ON UPDATE, DEFAULT ON NULL, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, NAME VARCHAR(50) NOT NULL , CODE VARCHAR(3) NOT NULL , CAPACITY INT NOT NULL , SLOT_INTERVAL INT NOT NULL , WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE ) [42001-224]
+2024-03-24 01:27:11.393789+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, NAME VARCHAR(50) NOT NULL , CODE VARCHAR(3) NOT NULL , CAPACITY INT NOT NULL , SLOT_INTERVAL INT NOT NULL , WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL [*]CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE )"; expected "DEFAULT, GENERATED, ON UPDATE, DEFAULT ON NULL, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, NAME VARCHAR(50) NOT NULL , CODE VARCHAR(3) NOT NULL , CAPACITY INT NOT NULL , SLOT_INTERVAL INT NOT NULL , WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE ) [42001-224]
+2024-03-24 01:27:11.399790+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CONFERENCE_ROOM" not found; SQL statement:
+CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM_SLOTS ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, CONFERENCE_ROOM_ID BIGINT , SLOT_DATE VARCHAR(20) NOT NULL , SLOT_TIME_WINDOW VARCHAR(20) NOT NULL , STATUS INT NOT NULL , CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , CONSTRAINT FK_1_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID) ) [42102-224]
+2024-03-24 01:27:11.401786+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CONFERENCE_ROOM" not found; SQL statement:
+CREATE TABLE IF NOT EXISTS MAINTENANCE_SETTINGS ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, CONFERENCE_ROOM_ID BIGINT , MAINTENANCE_SLOT VARCHAR(20) NOT NULL , CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , LAST_MODIFIED_BY VARCHAR(20) NOT NULL , LAST_MODIFIED_DATE TIMESTAMP(6) WITH TIME ZONE , CONSTRAINT FK_2_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID) ) [42102-224]
+2024-03-24 01:27:11.404786+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CONFERENCE_ROOM" not found; SQL statement:
+CREATE TABLE IF NOT EXISTS ROOM_BOOKING_HISTORY ( ID BIGINT AUTO_INCREMENT PRIMARY KEY, CONFERENCE_ROOM_ID BIGINT NOT NULL , MEETING_TITLE VARCHAR(255) NOT NULL , CONATCT_NUMBER VARCHAR(20) NOT NULL , CONATCT_EMAIL VARCHAR(20) , NO_OF_PARTICIPANTS INT , START_TIME TIMESTAMP(6) , END_TIME TIMESTAMP(6) , SLOT_IDS VARCHAR(100) NOT NULL , CREATED_BY VARCHAR(20) NOT NULL , CREATED_DATE TIMESTAMP(6) WITH TIME ZONE , CONSTRAINT FK_3_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID) ) [42102-224]
+2024-03-24 01:27:32.511979+04:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CONFERENCE_ROOM_SLOTS" not found; SQL statement:
+DROP TABLE CONFERENCE_ROOM_SLOTS [42102-224]
+2024-03-24 01:27:32.513962+04:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MAINTENANCE_SETTINGS" not found; SQL statement:
+DROP TABLE MAINTENANCE_SETTINGS [42102-224]
+2024-03-24 01:27:32.515961+04:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROOM_BOOKING_HISTORY" not found; SQL statement:
+DROP TABLE ROOM_BOOKING_HISTORY [42102-224]
+2024-03-24 01:27:32.517962+04:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CONFERENCE_ROOM" not found; SQL statement:
+DROP TABLE CONFERENCE_ROOM [42102-224]
+2024-03-24 01:27:44.069570+04:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM\000d\000a(\000d\000a    ID                  BIGINT AUTO_INCREMENT PRIMARY KEY,\000d\000a    NAME                VARCHAR(50) NOT NULL             ,\000d\000a    CODE                VARCHAR(3) NOT NULL              ,\000d\000a    CAPACITY            INT NOT NULL                     , -- (people)\000d\000a    SLOT_INTERVAL       INT NOT NULL                     , -- (minutes)\000d\000a    WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL               -- (room active in operation)\000d\000a    -- AUDIT Fields\000d\000a    [*]CREATED_BY          VARCHAR(20) NOT NULL             ,\000d\000a    CREATED_DATE        TIMESTAMP(6) WITH TIME ZONE      ,\000d\000a    LAST_MODIFIED_BY    VARCHAR(20) NOT NULL             ,\000d\000a    LAST_MODIFIED_DATE  TIMESTAMP(6) WITH TIME ZONE\000d\000a)"; expected "DEFAULT, GENERATED, ON UPDATE, DEFAULT ON NULL, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM
+(
+    ID                  BIGINT AUTO_INCREMENT PRIMARY KEY,
+    NAME                VARCHAR(50) NOT NULL             ,
+    CODE                VARCHAR(3) NOT NULL              ,
+    CAPACITY            INT NOT NULL                     , -- (people)
+    SLOT_INTERVAL       INT NOT NULL                     , -- (minutes)
+    WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL               -- (room active in operation)
+    -- AUDIT Fields
+    CREATED_BY          VARCHAR(20) NOT NULL             ,
+    CREATED_DATE        TIMESTAMP(6) WITH TIME ZONE      ,
+    LAST_MODIFIED_BY    VARCHAR(20) NOT NULL             ,
+    LAST_MODIFIED_DATE  TIMESTAMP(6) WITH TIME ZONE
+) [42001-224]
+2024-03-24 01:28:56.832034+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CONFERENCE_ROOM_SLOTS" not found; SQL statement:
+DROP TABLE CONFERENCE_ROOM_SLOTS [42102-224]
+2024-03-24 01:28:56.835033+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MAINTENANCE_SETTINGS" not found; SQL statement:
+DROP TABLE MAINTENANCE_SETTINGS [42102-224]
+2024-03-24 01:28:56.835033+04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "ROOM_BOOKING_HISTORY" not found; SQL statement:
+DROP TABLE ROOM_BOOKING_HISTORY [42102-224]
