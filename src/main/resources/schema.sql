@@ -15,11 +15,11 @@ CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM
     CODE                VARCHAR(3) NOT NULL              ,
     CAPACITY            INT NOT NULL                     , -- (people)
     SLOT_INTERVAL       INT NOT NULL                     , -- (minutes)
-    WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL             , -- (room active in operation)
+    WORKING_HOUR_WINDOW VARCHAR(20) NOT NULL             , -- (room active in operation hour, ex: 8 hours)
     -- AUDIT Fields
     CREATED_BY          VARCHAR(20) NOT NULL             ,
     CREATED_DATE        TIMESTAMP(6) WITH TIME ZONE      ,
-    LAST_MODIFIED_BY    VARCHAR(20) NOT NULL             ,
+    LAST_MODIFIED_BY    VARCHAR(20) NULL                 ,
     LAST_MODIFIED_DATE  TIMESTAMP(6) WITH TIME ZONE
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS MAINTENANCE_SETTINGS
     -- AUDIT Fields
     CREATED_BY          VARCHAR(20) NOT NULL             ,
     CREATED_DATE        TIMESTAMP(6) WITH TIME ZONE      ,
-    LAST_MODIFIED_BY    VARCHAR(20) NOT NULL             ,
+    LAST_MODIFIED_BY    VARCHAR(20) NULL                 ,
     LAST_MODIFIED_DATE  TIMESTAMP(6) WITH TIME ZONE      ,
     CONSTRAINT FK_2_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID)
 );
