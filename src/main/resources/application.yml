@@ -1,7 +1,7 @@
 server:
-  port: 7575
+  port: 8585
   servlet:
-    context-path: /crb
+    context-path: /crb-service
 
 
 spring:
