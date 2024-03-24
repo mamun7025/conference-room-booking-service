@@ -1,4 +1,4 @@
-package com.mamun25dev.crbservice.dto;
+package com.mamun25dev.crbservice.dto.command;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

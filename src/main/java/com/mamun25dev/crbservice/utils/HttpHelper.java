@@ -1,6 +1,6 @@
 package com.mamun25dev.crbservice.utils;
 
-import com.mamun25dev.crbservice.dto.common.LoginUser;
+import com.mamun25dev.crbservice.dto.LoginUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

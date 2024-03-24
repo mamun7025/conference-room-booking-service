@@ -1,14 +1,12 @@
 package com.mamun25dev.crbservice.controller;
 
-import com.mamun25dev.crbservice.domain.ConferenceRoom;
-import com.mamun25dev.crbservice.dto.BookingCommand;
+import com.mamun25dev.crbservice.dto.command.BookingCommand;
 import com.mamun25dev.crbservice.dto.BookingDetails;
-import com.mamun25dev.crbservice.dto.QueryCommand;
-import com.mamun25dev.crbservice.dto.common.ResponseModel;
-import com.mamun25dev.crbservice.dto.common.ResponseStatus;
+import com.mamun25dev.crbservice.dto.command.QueryCommand;
+import com.mamun25dev.crbservice.dto.response.ResponseModel;
+import com.mamun25dev.crbservice.dto.response.ResponseStatus;
 import com.mamun25dev.crbservice.dto.request.BookingRequest;
 import com.mamun25dev.crbservice.dto.AvailableRoom;
-import com.mamun25dev.crbservice.repository.ConferenceRoomRepository;
 import com.mamun25dev.crbservice.service.CreateBookingService;
 import com.mamun25dev.crbservice.service.QueryAvailableRoomService;
 import com.mamun25dev.crbservice.utils.HttpHelper;
@@ -27,20 +25,9 @@ import java.util.List;
 public class ConferenceRoomController {
 
     private final HttpHelper httpHelper;
-    private final ConferenceRoomRepository conferenceRoomRepository;
-
     private final CreateBookingService createBookingService;
     private final QueryAvailableRoomService queryAvailableRoomService;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllRooms(){
-        final var conferenceRoomList = conferenceRoomRepository.findAll();
-        final var responseData = ResponseModel.<List<ConferenceRoom>>builder()
-                .status(ResponseStatus.SUCCESS)
-                .data(conferenceRoomList)
-                .build();
-        return ResponseEntity.status(HttpStatus.OK).body(responseData);
-    }
 
 
     @GetMapping("/available")

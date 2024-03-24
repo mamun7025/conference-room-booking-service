@@ -1,4 +1,4 @@
-package com.mamun25dev.crbservice.dto.common;
+package com.mamun25dev.crbservice.dto;
 
 import lombok.Builder;
 import lombok.Data;

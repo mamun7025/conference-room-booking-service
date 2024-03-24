@@ -1,0 +1,19 @@
+Booking Case
+
+input
+=============================
+meetingStartTime = 10:00
+meetingEndTime   = 10:15
+
+
+input
+=============================
+meetingStartTime = 2020-06-12 10:00
+meetingEndTime   = 2020-06-12 10:15
+
+
+
+validate overlap with maintenance time
+validate minimum people ---------------------------> done
+validate start time is less then end time
+check valid interval
