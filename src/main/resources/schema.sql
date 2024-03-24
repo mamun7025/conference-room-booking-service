@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS CONFERENCE_ROOM_SLOTS
 (
     ID                  BIGINT AUTO_INCREMENT PRIMARY KEY,
     CONFERENCE_ROOM_ID  BIGINT                           ,
-    SLOT_DATE           VARCHAR(20) NOT NULL             ,
+    SLOT_DATE           VARCHAR(20) NULL                 ,
     SLOT_TIME_WINDOW    VARCHAR(20) NOT NULL             ,
     STATUS              INT NOT NULL                     ,
     -- AUDIT Fields

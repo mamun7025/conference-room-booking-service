@@ -1,7 +1,7 @@
 server:
-  port: 7575
+  port: 8585
   servlet:
-    context-path: /crb
+    context-path: /crb-service
 
 
 spring:
@@ -33,5 +33,5 @@ spring:
 
 
 
-### H2-DB open in browser
-##http://localhost:7575/project/h2-console
+## H2-DB open in browser
+## http://localhost:8585/crb-service/h2-console

@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
-import java.time.Instant;
-import java.time.LocalDate;
+import java.time.*;
 
 @Setter
 @Getter
@@ -20,12 +19,24 @@ public class ConferenceRoomSlots {
     @JoinColumn(name = "conference_room_id")
     private ConferenceRoom conferenceRoom;
 
-    private LocalDate slotDate;
+    private LocalDate slotDate;             // advance booking manage - not in current scope
     private String slotTimeWindow;
+    @Transient
+    private LocalTime slotStartTime;
+    @Transient
+    private LocalTime slotEndTime;
     private int status;
 
     // audit fields
+    private String createdBy;
     @CreatedDate
     @Column(updatable = false)
-    private Instant createdDate;
+    private Instant createdDate = Instant.now();
+
+    public LocalTime getSlotStartTime(){
+        return LocalTime.parse(slotTimeWindow.split("-")[0]);
+    }
+    public LocalTime getSlotEndTime(){
+        return LocalTime.parse(slotTimeWindow.split("-")[1]);
+    }
 }
