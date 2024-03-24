@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 public class BookingRequest{
     private Long roomId;                    // optional
     @NotBlank
+    private String meetingTitle;
+    @NotBlank
     private String meetingStartTime;
     @NotBlank
     private String meetingEndTime;

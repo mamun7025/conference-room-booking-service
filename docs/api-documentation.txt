@@ -1,0 +1,64 @@
+
+Query available conference room
+GET API: http://localhost:8585/crb-service/v1/api/conference-room/available?startTime=10:00&endTime=10:30
+
+Response:
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 2,
+            "name": "Beauty",
+            "roomCode": "502",
+            "capacity": 7,
+            "slotList": [
+                {
+                    "id": 41,
+                    "slotWindow": "10:00-10:15",
+                    "status": 0
+                },
+                {
+                    "id": 42,
+                    "slotWindow": "10:15-10:30",
+                    "status": 0
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Inspire",
+            "roomCode": "503",
+            "capacity": 12,
+            "slotList": [
+                {
+                    "id": 77,
+                    "slotWindow": "10:00-10:15",
+                    "status": 0
+                },
+                {
+                    "id": 78,
+                    "slotWindow": "10:15-10:30",
+                    "status": 0
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Strive",
+            "roomCode": "504",
+            "capacity": 20,
+            "slotList": [
+                {
+                    "id": 113,
+                    "slotWindow": "10:00-10:15",
+                    "status": 0
+                },
+                {
+                    "id": 114,
+                    "slotWindow": "10:15-10:30",
+                    "status": 0
+                }
+            ]
+        }
+    ]
+}
