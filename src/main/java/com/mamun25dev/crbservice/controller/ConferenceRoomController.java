@@ -13,8 +13,6 @@ import com.mamun25dev.crbservice.utils.HttpHelper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -31,8 +29,8 @@ public class ConferenceRoomController {
 
 
     @GetMapping("/available")
-    public ResponseEntity<?> queryAllAvailableRooms(@RequestParam(name = "startTime") String startTime,
-                                                    @RequestParam(name = "endTime") String endTime){
+    public ResponseModel<List<AvailableRoom>> queryAllAvailableRooms(@RequestParam(name = "startTime") String startTime,
+                                                                     @RequestParam(name = "endTime") String endTime){
         final var loginUser = httpHelper.getLoginUserInfo();
         log.info("query request come from user: {} mobile number: {}",
                 loginUser.getUserId(), loginUser.getMobileNumber());
@@ -43,11 +41,10 @@ public class ConferenceRoomController {
                 .build();
         final var availableRoomList = queryAvailableRoomService.query(queryCommand);
 
-        final var responseData = ResponseModel.<List<AvailableRoom>>builder()
+        return ResponseModel.<List<AvailableRoom>>builder()
                 .status(ResponseStatus.SUCCESS)
                 .data(availableRoomList)
                 .build();
-        return ResponseEntity.status(HttpStatus.OK).body(responseData);
     }
 
     @PostMapping("/booking")
@@ -58,6 +55,7 @@ public class ConferenceRoomController {
 
         var bookingCommand = BookingCommand.builder()
                 .roomId(request.getRoomId())
+                .meetingTitle(request.getMeetingTitle())
                 .numberOfParticipants(request.getNumberOfParticipants())
                 .meetingStartTime(request.getMeetingStartTime())
                 .meetingEndTime(request.getMeetingEndTime())

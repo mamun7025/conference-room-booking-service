@@ -7,16 +7,17 @@ public enum ResponseStatus {
     FAIL("fail"),
     ERROR("error");
 
-    private String value;
+    private String valueSmall;
 
-    ResponseStatus(String value){
+    ResponseStatus(String valueSmall){
+        this.valueSmall = valueSmall;
     }
-    public String getValue(){
-        return value;
+    public String getValueSmall(){
+        return valueSmall;
     }
 
     @JsonValue
     public String toValue(){
-        return this.name().toLowerCase();
+        return ResponseStatus.valueOf(this.name()).getValueSmall();
     }
 }

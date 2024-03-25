@@ -9,6 +9,8 @@ import lombok.Builder;
 public record BookingCommand(
         Long roomId,                        // optional
         @NotBlank
+        String meetingTitle,
+        @NotBlank
         String meetingStartTime,
         @NotBlank
         String meetingEndTime,
