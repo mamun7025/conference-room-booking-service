@@ -11,7 +11,6 @@ import com.mamun25dev.crbservice.repository.ConferenceRoomSlotsRepository;
 import com.mamun25dev.crbservice.repository.RoomBookingHistoryRepository;
 import com.mamun25dev.crbservice.service.CreateBookingService;
 import com.mamun25dev.crbservice.service.QueryOptimalRoomService;
-import com.mamun25dev.crbservice.service.QuerySlotService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ public class CreateBookingServiceImpl implements CreateBookingService {
     private final ConferenceRoomSlotsRepository slotsRepository;
     private final RoomBookingHistoryRepository historyRepository;
 
-    private final QuerySlotService querySlotService;
+    private final QuerySlotServiceImpl querySlotServiceImpl;
     private final QueryOptimalRoomService queryOptimalRoomService;
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -80,7 +79,7 @@ public class CreateBookingServiceImpl implements CreateBookingService {
                 .orElseThrow( () -> new RuntimeException("") );
 
         // query slots by roomId and timeRange
-        final var slotList = querySlotService.query(room,
+        final var slotList = querySlotServiceImpl.query(room,
                 LocalDateTime.parse(command.meetingStartTime(), dateTimeFormatter).toLocalTime(),
                 LocalDateTime.parse(command.meetingEndTime(), dateTimeFormatter).toLocalTime());
 
@@ -113,7 +112,7 @@ public class CreateBookingServiceImpl implements CreateBookingService {
                 .orElseThrow(() -> new RuntimeException(""));
 
         // query slots by roomId and timeRange
-        final var slotList = querySlotService.query(optimalRoom,
+        final var slotList = querySlotServiceImpl.query(optimalRoom,
                 LocalDateTime.parse(command.meetingStartTime(), dateTimeFormatter).toLocalTime(),
                 LocalDateTime.parse(command.meetingEndTime(), dateTimeFormatter).toLocalTime());
 

@@ -47,6 +47,7 @@ public class ConferenceRoomController {
                 .build();
     }
 
+
     @PostMapping("/booking")
     public ResponseModel<BookingDetails> createBooking(@Valid @RequestBody BookingRequest request){
         final var loginUser = httpHelper.getLoginUserInfo();

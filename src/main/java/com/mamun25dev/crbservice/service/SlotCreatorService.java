@@ -6,6 +6,7 @@ import com.mamun25dev.crbservice.domain.MaintenanceSettings;
 import com.mamun25dev.crbservice.repository.ConferenceRoomRepository;
 import com.mamun25dev.crbservice.repository.ConferenceRoomSlotsRepository;
 import com.mamun25dev.crbservice.repository.MaintenanceSettingsRepository;
+import com.mamun25dev.crbservice.service.adapter.QuerySlotServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class SlotCreatorService {
     private final ConferenceRoomRepository conferenceRoomRepository;
     private final ConferenceRoomSlotsRepository conferenceRoomSlotsRepository;
     private final MaintenanceSettingsRepository maintenanceSettingsRepository;
-    private final QuerySlotService querySlotService;
+    private final QuerySlotServiceImpl querySlotServiceImpl;
 
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -106,7 +107,7 @@ public class SlotCreatorService {
         LocalTime startTime = LocalTime.parse(maintenanceSlot.split("-")[0].trim());
         LocalTime endTime = LocalTime.parse(maintenanceSlot.split("-")[1].trim());
 
-        final var slotsToBeBook = querySlotService.query(room, startTime, endTime);
+        final var slotsToBeBook = querySlotServiceImpl.query(room, startTime, endTime);
 
         var slotsInst= slotsToBeBook.stream()
                 .map(x -> {

@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.*;
 
 @Setter
 @Getter
 @Entity
 @Table(name = "CONFERENCE_ROOM_SLOTS")
+@EntityListeners(AuditingEntityListener.class)
 public class ConferenceRoomSlots {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +33,7 @@ public class ConferenceRoomSlots {
     private String createdBy;
     @CreatedDate
     @Column(updatable = false)
-    private Instant createdDate = Instant.now();
+    private Instant createdDate;
 
     public LocalTime getSlotStartTime(){
         return LocalTime.parse(slotTimeWindow.split("-")[0]);
