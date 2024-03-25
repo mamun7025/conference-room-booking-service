@@ -2,7 +2,6 @@ package com.mamun25dev.crbservice.dto.response;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.mamun25dev.crbservice.dto.response.ResponseStatus;
 import lombok.*;
 
 @Setter

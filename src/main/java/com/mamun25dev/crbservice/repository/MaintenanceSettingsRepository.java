@@ -1,12 +1,13 @@
 package com.mamun25dev.crbservice.repository;
 
 import com.mamun25dev.crbservice.domain.ConferenceRoom;
+import com.mamun25dev.crbservice.domain.MaintenanceSettings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ConferenceRoomRepository extends JpaRepository<ConferenceRoom, Long> {
+public interface MaintenanceSettingsRepository extends JpaRepository<MaintenanceSettings, Long> {
 
-    List<ConferenceRoom> findAllByCapacityGreaterThanEqual(int capacity);
+    List<MaintenanceSettings> findAllByConferenceRoom(ConferenceRoom conferenceRoom);
 }

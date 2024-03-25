@@ -2,7 +2,6 @@ package com.mamun25dev.crbservice.service;
 
 import com.mamun25dev.crbservice.domain.ConferenceRoom;
 import com.mamun25dev.crbservice.domain.ConferenceRoomSlots;
-import com.mamun25dev.crbservice.repository.ConferenceRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalTime;
@@ -17,12 +16,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuerySlotService {
 
-    private final ConferenceRoomRepository conferenceRoomRepository;
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HHmm");
 
 
-    public List<ConferenceRoomSlots> querySlots(ConferenceRoom conferenceRoom,
-                                                LocalTime lkpStartTime, LocalTime lkpEndTime) {
+    public List<ConferenceRoomSlots> query(ConferenceRoom conferenceRoom,
+                                           LocalTime lkpStartTime, LocalTime lkpEndTime) {
 
         final var allSlots = conferenceRoom.getRoomSlots();
         // sorted slots for this room
@@ -38,7 +36,7 @@ public class QuerySlotService {
 
         List<ConferenceRoomSlots> slotList = new ArrayList<>();
         for (int lkpKey = startKeyLkp; lkpKey < endKeyLkp; ){
-            var lookupSlot = sortedSlotsMap.get(String.valueOf(lkpKey));
+            var lookupSlot = sortedSlotsMap.get(String.format("%04d", lkpKey));
             slotList.add(lookupSlot);
             lkpKey = getNextLookupKey(keyInterval, lkpKey);
         }
@@ -46,7 +44,7 @@ public class QuerySlotService {
     }
 
     private int getNextLookupKey(int keyInterval, int lkpKey) {
-        var lkpKeyTime = LocalTime.parse(String.valueOf(lkpKey), timeFormat);
+        var lkpKeyTime = LocalTime.parse(String.format("%04d", lkpKey), timeFormat);
         return Integer.parseInt(lkpKeyTime.plusMinutes(keyInterval).format(timeFormat));
     }
 

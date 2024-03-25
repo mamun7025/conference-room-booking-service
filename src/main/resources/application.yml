@@ -35,3 +35,6 @@ spring:
 
 ## H2-DB open in browser
 ## http://localhost:8585/crb-service/h2-console
+## JDBC URL: jdbc:h2:file:./db/crb_dev_db;AUTO_SERVER=true
+## Username: sa
+## Password: root

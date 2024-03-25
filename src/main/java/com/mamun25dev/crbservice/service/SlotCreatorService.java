@@ -2,8 +2,10 @@ package com.mamun25dev.crbservice.service;
 
 import com.mamun25dev.crbservice.domain.ConferenceRoom;
 import com.mamun25dev.crbservice.domain.ConferenceRoomSlots;
+import com.mamun25dev.crbservice.domain.MaintenanceSettings;
 import com.mamun25dev.crbservice.repository.ConferenceRoomRepository;
 import com.mamun25dev.crbservice.repository.ConferenceRoomSlotsRepository;
+import com.mamun25dev.crbservice.repository.MaintenanceSettingsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -20,11 +23,19 @@ public class SlotCreatorService {
 
     private final ConferenceRoomRepository conferenceRoomRepository;
     private final ConferenceRoomSlotsRepository conferenceRoomSlotsRepository;
+    private final MaintenanceSettingsRepository maintenanceSettingsRepository;
+    private final QuerySlotService querySlotService;
 
     private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
 
     public void createAllConferenceRoomSlots(){
 
+        createAllSlots();
+        // book slot for maintenance
+        bookSlotForMaintenanceTime();
+    }
+
+    public void createAllSlots() {
         final var allRooms = conferenceRoomRepository.findAll();
         allRooms.forEach(x -> {
             createSlotForThisRoom(x);
@@ -71,4 +82,44 @@ public class SlotCreatorService {
         LocalTime slotEndTime = slotStartTime.plusMinutes(slotInterval);
         return String.format("%s-%s", slotStartTime.format(timeFormat), slotEndTime.format(timeFormat));
     }
+
+
+
+    public void bookSlotForMaintenanceTime() {
+        final var allRooms = conferenceRoomRepository.findAll();
+        allRooms.forEach(x -> {
+            createSlotBooKForThisRoom(x);
+        });
+    }
+
+    private void createSlotBooKForThisRoom(ConferenceRoom room) {
+        final var maintenanceSettings = maintenanceSettingsRepository.findAllByConferenceRoom(room);
+        var slotIds = maintenanceSettings.stream()
+                .map(x -> doBook(x, room))
+                .collect(Collectors.toList());
+        log.info("booked all slot ids: {}", slotIds);
+    }
+
+    private List<Long> doBook(MaintenanceSettings settings, ConferenceRoom room) {
+
+        String maintenanceSlot =  settings.getMaintenanceSlot();
+        LocalTime startTime = LocalTime.parse(maintenanceSlot.split("-")[0].trim());
+        LocalTime endTime = LocalTime.parse(maintenanceSlot.split("-")[1].trim());
+
+        final var slotsToBeBook = querySlotService.query(room, startTime, endTime);
+
+        var slotsInst= slotsToBeBook.stream()
+                .map(x -> {
+                    x.setStatus(-1);
+                    return x;
+                })
+                .collect(Collectors.toList());
+        // save all
+        conferenceRoomSlotsRepository.saveAll(slotsInst);
+
+        var slotIds = slotsInst.stream().map(ConferenceRoomSlots::getId).collect(Collectors.toList());
+        log.info("booked slotIds: {}", slotIds);
+        return slotIds;
+    }
+
 }

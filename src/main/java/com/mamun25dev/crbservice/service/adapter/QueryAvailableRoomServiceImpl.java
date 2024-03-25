@@ -33,15 +33,15 @@ public class QueryAvailableRoomServiceImpl implements QueryAvailableRoomService 
         final var allRooms = conferenceRoomRepository.findAll();
 
         final var availableRoomSlots = allRooms.stream()
-                .map(r -> mapAvailableRoomCtx(r, lkpStartTime, lkpEndTime))
+                .map(r -> mapToAvailableRoomCtx(r, lkpStartTime, lkpEndTime))
                 .filter(Objects::nonNull)
                 .toList();
 
         return availableRoomSlots;
     }
 
-    private AvailableRoom mapAvailableRoomCtx(ConferenceRoom conferenceRoom,
-                                              LocalTime lkpStartTime, LocalTime lkpEndTime) {
+    private AvailableRoom mapToAvailableRoomCtx(ConferenceRoom conferenceRoom,
+                                                LocalTime lkpStartTime, LocalTime lkpEndTime) {
 
         final var allSlots = conferenceRoom.getRoomSlots();
         // sorted slots for this room
@@ -100,7 +100,4 @@ public class QueryAvailableRoomServiceImpl implements QueryAvailableRoomService 
         );
     }
 
-    private boolean isSlotsAvailableBetweenRange(){
-        return true;
-    }
 }

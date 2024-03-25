@@ -17,3 +17,6 @@ validate overlap with maintenance time
 validate minimum people ---------------------------> done
 validate start time is less then end time
 check valid interval
+
+
+lock slots by ID >>> pessimistic lock
