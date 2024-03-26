@@ -36,3 +36,16 @@ Some test case might fail if test in maintenance timeframe
 
 
 >>>>>>> Manage custom clock for testing.....
+
+>>>> create ERD diagram by intelij
+
+Schema Design and ERD Diagram
+Schema Design
+ERD Diagram
+Sample data example
+
+
+Run 3way
+- Pull Dcoker Image from DockerHub
+- Build and Run docker imame locally
+- Run by Intelij

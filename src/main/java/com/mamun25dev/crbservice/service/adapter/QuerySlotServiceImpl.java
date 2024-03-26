@@ -4,7 +4,7 @@ import com.mamun25dev.crbservice.domain.ConferenceRoom;
 import com.mamun25dev.crbservice.domain.ConferenceRoomSlots;
 import com.mamun25dev.crbservice.service.QuerySlotService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class QuerySlotServiceImpl implements QuerySlotService {
 
