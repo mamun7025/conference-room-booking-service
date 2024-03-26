@@ -11,21 +11,27 @@ import com.mamun25dev.crbservice.service.QuerySlotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.time.LocalTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-import static com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode.CONFERENCE_ROOM_NOT_AVAILABLE_IN_RANGE;
+import static com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode.*;
+import static com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode.START_TIME_END_TIME_FAILURE;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class QueryAvailableRoomServiceImpl implements QueryAvailableRoomService {
 
+    private final Clock clock;
     private final ConferenceRoomRepository conferenceRoomRepository;
     private final QuerySlotService querySlotService;
+    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
 
     @Override
     public List<AvailableRoom> query(QueryCommand queryCommand) {
+        validateBasic(queryCommand);
 
         LocalTime lkpStartTime = LocalTime.parse(queryCommand.startTime());
         LocalTime lkpEndTime = LocalTime.parse(queryCommand.endTime());
@@ -74,6 +80,18 @@ public class QueryAvailableRoomServiceImpl implements QueryAvailableRoomService 
                     .build();
         }
         return null;
+    }
+
+    private void validateBasic(QueryCommand queryCommand) {
+        final var startTime = LocalTime.parse(queryCommand.startTime(), timeFormatter);
+        final var endTime = LocalTime.parse(queryCommand.endTime(), timeFormatter);
+        // past time
+        final var todayTime = LocalTime.now(clock);
+        if(todayTime.isAfter(startTime) || todayTime.isAfter(endTime))
+            throw new BusinessException(BOOKING_TIME_VALIDATION_FAILURE);
+
+        if(startTime.isAfter(endTime))
+            throw new BusinessException(START_TIME_END_TIME_FAILURE);
     }
 
 }

@@ -5,12 +5,13 @@ import com.mamun25dev.crbservice.dto.command.QueryOptimalRoomCommand;
 import com.mamun25dev.crbservice.exception.BusinessException;
 import com.mamun25dev.crbservice.repository.ConferenceRoomRepository;
 import com.mamun25dev.crbservice.service.QueryOptimalRoomService;
+import com.mamun25dev.crbservice.service.QuerySlotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
 import static com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode.OVERLAP_WITH_MAINTENANCE_FAILURE;
 
 
@@ -19,7 +20,7 @@ import static com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode.OVERLA
 public class QueryOptimalRoomServiceImpl implements QueryOptimalRoomService {
 
 
-    private final QuerySlotServiceImpl querySlotServiceImpl;
+    private final QuerySlotService querySlotService;
     private final ConferenceRoomRepository conferenceRoomRepository;
 
     @Override
@@ -27,7 +28,11 @@ public class QueryOptimalRoomServiceImpl implements QueryOptimalRoomService {
         // move next room, if slot not available
         final List<ConferenceRoom> roomList = conferenceRoomRepository.findAllByCapacityGreaterThanEqual(queryCommand.noOfParticipant());
 
-        return roomList.stream()
+        final var sortedRoomList = roomList.stream()
+                .sorted(Comparator.comparing(ConferenceRoom::getCapacity))
+                .toList();
+
+        return sortedRoomList.stream()
                 .filter(x -> checkSlotsAvailableWithinRange(x,
                         queryCommand.meetingStartTime(),
                         queryCommand.meetingEndTime()))
@@ -35,7 +40,7 @@ public class QueryOptimalRoomServiceImpl implements QueryOptimalRoomService {
     }
 
     private boolean checkSlotsAvailableWithinRange(ConferenceRoom room, LocalTime startTime, LocalTime endTime) {
-        final var slotList = querySlotServiceImpl.query(room, startTime, endTime);
+        final var slotList = querySlotService.query(room, startTime, endTime);
 
         // validation: maintenance time overlap
         slotList.stream()

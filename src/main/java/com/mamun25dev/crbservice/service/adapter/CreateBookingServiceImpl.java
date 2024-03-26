@@ -12,20 +12,16 @@ import com.mamun25dev.crbservice.repository.ConferenceRoomSlotsRepository;
 import com.mamun25dev.crbservice.repository.RoomBookingHistoryRepository;
 import com.mamun25dev.crbservice.service.CreateBookingService;
 import com.mamun25dev.crbservice.service.QueryOptimalRoomService;
+import com.mamun25dev.crbservice.service.QuerySlotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode.*;
 
 @Slf4j
@@ -33,11 +29,12 @@ import static com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode.*;
 @RequiredArgsConstructor
 public class CreateBookingServiceImpl implements CreateBookingService {
 
+    private final Clock clock;
     private final ConferenceRoomRepository roomRepository;
     private final ConferenceRoomSlotsRepository slotsRepository;
     private final RoomBookingHistoryRepository historyRepository;
 
-    private final QuerySlotServiceImpl querySlotServiceImpl;
+    private final QuerySlotService querySlotService;
     private final QueryOptimalRoomService queryOptimalRoomService;
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -56,13 +53,13 @@ public class CreateBookingServiceImpl implements CreateBookingService {
 
 
         // query slots by roomId and timeRange
-        final var slotList = querySlotServiceImpl.query(room,
+        final var slotList = querySlotService.query(room,
                 LocalDateTime.parse(command.meetingStartTime(), dateTimeFormatter).toLocalTime(),
                 LocalDateTime.parse(command.meetingEndTime(), dateTimeFormatter).toLocalTime());
 
 
-        // execute booking with lock
         final var bookSlotIds = slotList.stream().map(x -> x.getId()).collect(Collectors.toList());
+        // execute booking with lock
         final var bookedSlotList = execute(bookSlotIds);
 
 
@@ -167,13 +164,13 @@ public class CreateBookingServiceImpl implements CreateBookingService {
         final var meetingStartDateTime = LocalDateTime.parse(command.meetingStartTime(), dateTimeFormatter);
         final var meetingEndDateTime = LocalDateTime.parse(command.meetingEndTime(), dateTimeFormatter);
 
-        final var todayDate = LocalDate.now(ZoneId.systemDefault());
+        final var todayDate = LocalDate.now(clock);
         if(todayDate.compareTo(meetingStartDateTime.toLocalDate()) != 0
                 || todayDate.compareTo(meetingEndDateTime.toLocalDate()) != 0)
             throw new BusinessException(BOOKING_DATE_VALIDATION_FAILURE);
 
         // past time
-        final var todayTime = LocalTime.now(ZoneId.systemDefault());
+        final var todayTime = LocalTime.now(clock);
         if(todayTime.isAfter(meetingStartDateTime.toLocalTime())
                 || todayTime.isAfter(meetingEndDateTime.toLocalTime()))
             throw new BusinessException(BOOKING_TIME_VALIDATION_FAILURE);

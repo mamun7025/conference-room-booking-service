@@ -31,6 +31,15 @@ spring:
       continue-on-error: true
 
 
+springdoc:
+  api-docs:
+    enabled: true
+
+app:
+  time:
+    zone-id: Asia/Dubai
+    override-testing-time: false
+    override-datetime-value: 2024-03-26 10:00
 
 
 ## H2-DB open in browser
