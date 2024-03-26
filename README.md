@@ -1,27 +1,27 @@
 # Conference Room Booking REST API service
 
-will show all available conference room in current date with capacity and user will be able to book available room
-for a definite 15 min time interval slot.
-with slot information.
+Providing all available conference room for the current date, along with their capacities. User will be able to book a available room
+for a time slot of 15 min interval.
 
 Features:
 - Optimal room search based on number of participants and capacity
+- Configurable conference room operating hours (Ex: 8 hours, 10 hours..) and interval duration (Ex: 15min, 30min...) 
 - Room maintenance time and overlap handling
-- Concurrent request handling
+- Concurrent request handling with database records locking
 
 
 
 ## Table of contents
 * [Technology Stack](#technology-stack)
-* [Project Structure](#technologies)
-* [Install and Run Project - 3 ways](#technologies)
-    + [Run in Docker](#install-python)
-    + [Command Line](#install-virtualenv)
-    + [Intellij IDEA](#install-virtualenv)
-* [Database & Schema Design](#install-python)
-* [Swagger and API Docs](#install-python)
-* [Postman Collection](#run-backend-application)
-* [Test Case](#run-backend-application)
+* [Project Structure](#project-structure)
+* [Build and Run Project - 3 ways](#build-and-run-project-3ways)
+    + [Pull docker image from docker hub](#install-python)
+    + [Build and run docker image locally](#install-virtualenv)
+    + [By Intellij IDEA](#install-virtualenv)
+* [Database, Schema Design and ERD](#install-python)
+* [Swagger / OpenAPI docs](#install-python)
+* [Postman collection](#run-backend-application)
+* [Special instruction and Test case](#run-backend-application)
 * [Author](#enviorment-setup---frontend)
 
 ## Technology Stack
@@ -32,30 +32,35 @@ Features:
 
 
 ## Project Structure
-
 ![](docs/project-structure.png)
 
-## Install and Run Project - 3 ways
+
+## Build and Run Project - 3 ways
+
+### Pull docker image from docker hub
+Pull and run docker image from docker hub
+
+    docker pull mn7025/conference-room-service
+    docker image ls
+    docker run -p 8585:8585 --name conference-room-service-cnt conference-room-service 			>>>> Own account
+    docker run -p 8585:8585 --name conference-room-service-cnt mn7025/conference-room-service   >>>> Other PC account
+
+Build and run docker image locally
+
+    mvn clean install
+    docker build -t conference-room-service .
+    docker run -p 8585:8585 --name conference-room-service-cnt conference-room-service
+
+Push image to docker hub
+
+    docker images
+    docker tag conference-room-service:latest mn7025/conference-room-service:latest
+    docker push mn7025/conference-room-service:latest
+
+
+
 
 ## Database & Schema Design
 
 ![](docs/schema-design.png)
 
-Run application | 3 ways
->>>> Build and Run locally
-mvn clean install
-docker build -t conference-room-service .
-docker run -p 8585:8585 --name conference-room-service-cnt conference-room-service
-
-
->>>> Push image to docker hub
-docker images
-docker tag conference-room-service:latest mn7025/conference-room-service:latest
-docker push mn7025/conference-room-service:latest
-
-
->>>> Pull image and run
-docker pull mn7025/conference-room-service
-docker image ls
-docker run -p 8585:8585 --name conference-room-service-cnt conference-room-service 			>>>> Own account
-docker run -p 8585:8585 --name conference-room-service-cnt mn7025/conference-room-service   >>>> Other PC account
