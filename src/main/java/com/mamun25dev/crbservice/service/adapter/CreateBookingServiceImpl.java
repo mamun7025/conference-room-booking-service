@@ -6,20 +6,27 @@ import com.mamun25dev.crbservice.domain.RoomBookingHistory;
 import com.mamun25dev.crbservice.dto.command.BookingCommand;
 import com.mamun25dev.crbservice.dto.BookingDetails;
 import com.mamun25dev.crbservice.dto.command.QueryOptimalRoomCommand;
+import com.mamun25dev.crbservice.exception.BusinessException;
 import com.mamun25dev.crbservice.repository.ConferenceRoomRepository;
 import com.mamun25dev.crbservice.repository.ConferenceRoomSlotsRepository;
 import com.mamun25dev.crbservice.repository.RoomBookingHistoryRepository;
 import com.mamun25dev.crbservice.service.CreateBookingService;
 import com.mamun25dev.crbservice.service.QueryOptimalRoomService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode.*;
 
 @Slf4j
 @Service
@@ -37,31 +44,39 @@ public class CreateBookingServiceImpl implements CreateBookingService {
 
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public BookingDetails create(BookingCommand command) {
+        // basic validation
+        validateBasic(command);
 
-        var savedBookingCtx = (command.roomId() != null)
-                ? createBookingWithRoomId(command)
-                : createBookingWithOptimalSearch(command);
+        // find conference room
+        final var room = (command.roomId() != null)
+                ? queryRoomById(command.roomId())
+                : queryOptimalRoom(command);
 
-        var bookedSlotIds = savedBookingCtx.getBookedSlots().stream()
+
+        // query slots by roomId and timeRange
+        final var slotList = querySlotServiceImpl.query(room,
+                LocalDateTime.parse(command.meetingStartTime(), dateTimeFormatter).toLocalTime(),
+                LocalDateTime.parse(command.meetingEndTime(), dateTimeFormatter).toLocalTime());
+
+
+        // execute booking with lock
+        final var bookSlotIds = slotList.stream().map(x -> x.getId()).collect(Collectors.toList());
+        final var bookedSlotList = execute(bookSlotIds);
+
+
+        var bookedSlotIds = bookedSlotList.stream()
                 .map(x -> x.getId().toString())
                 .collect(Collectors.toList());
 
+
         // insert into history
-        var bookingHistory = new RoomBookingHistory();
-        bookingHistory.setConferenceRoom(savedBookingCtx.bookedRoom);
-        bookingHistory.setMeetingTitle(command.meetingTitle());
-        bookingHistory.setNoOfParticipants(command.numberOfParticipants());
-        bookingHistory.setStartTime(LocalDateTime.parse(command.meetingStartTime()));
-        bookingHistory.setEndTime(LocalDateTime.parse(command.meetingEndTime()));
-        bookingHistory.setContactNumber(command.requestorMobileNumber());
-        bookingHistory.setContactEmail(command.requestorEmail());
-        bookingHistory.setCreatedBy(command.requestorUserId());
-        bookingHistory.setSlotIds(bookedSlotIds);
-        historyRepository.save(bookingHistory);
+        final var bookingHistory = insertIntoBookingHistory(command, room, bookedSlotIds);
 
-
+        // response
         return BookingDetails.builder()
+                .id(bookingHistory.getId())
                 .roomId(bookingHistory.getConferenceRoom().getId())
                 .slotIds(bookedSlotIds)
                 .noOfParticipants(bookingHistory.getNoOfParticipants())
@@ -70,38 +85,19 @@ public class CreateBookingServiceImpl implements CreateBookingService {
                 .contactEmail(bookingHistory.getContactEmail())
                 .startTime(bookingHistory.getStartTime())
                 .endTime(bookingHistory.getEndTime())
+                .createdBy(command.requestorUserId())
+                .createdDate(bookingHistory.getCreatedDate())
                 .build();
     }
 
-    private SavedBookingCtx createBookingWithRoomId(BookingCommand command){
-        // fetch conference room
-        final var room= roomRepository.findById(command.roomId())
-                .orElseThrow( () -> new RuntimeException("") );
 
-        // query slots by roomId and timeRange
-        final var slotList = querySlotServiceImpl.query(room,
-                LocalDateTime.parse(command.meetingStartTime(), dateTimeFormatter).toLocalTime(),
-                LocalDateTime.parse(command.meetingEndTime(), dateTimeFormatter).toLocalTime());
-
-        // load slots again with lock access
-
-        // book slot
-        final var updateSlotList = slotList.stream()
-                .map(x -> {
-                    x.setStatus(1);
-                    return x;
-                })
-                .collect(Collectors.toList());
-
-        // save all
-        slotsRepository.saveAll(updateSlotList);
-
-        return new SavedBookingCtx(room, updateSlotList);
+    private ConferenceRoom queryRoomById(Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new BusinessException(CONFERENCE_ROOM_NOT_FOUND));
     }
 
-    private SavedBookingCtx createBookingWithOptimalSearch(BookingCommand command){
-
-        // find optimal room base on participants
+    private ConferenceRoom queryOptimalRoom(BookingCommand command) {
+        // search optimal room base on participants
         var searchCommand = QueryOptimalRoomCommand.builder()
                 .noOfParticipant(command.numberOfParticipants())
                 .meetingStartTime(LocalDateTime.parse(command.meetingStartTime(), dateTimeFormatter).toLocalTime())
@@ -109,17 +105,33 @@ public class CreateBookingServiceImpl implements CreateBookingService {
                 .build();
 
         final var optimalRoom = queryOptimalRoomService.query(searchCommand)
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new BusinessException(CONFERENCE_ROOM_NOT_AVAILABLE_IN_RANGE));
+        log.info("optimal room: {}", optimalRoom.getName());
 
-        // query slots by roomId and timeRange
-        final var slotList = querySlotServiceImpl.query(optimalRoom,
-                LocalDateTime.parse(command.meetingStartTime(), dateTimeFormatter).toLocalTime(),
-                LocalDateTime.parse(command.meetingEndTime(), dateTimeFormatter).toLocalTime());
+        return optimalRoom;
+    }
 
-        // load slots again with lock access
 
-        // book slot
-        final var updateSlotList = slotList.stream()
+
+    public List<ConferenceRoomSlots> execute(List<Long> slotIds){
+
+        // read slots from database with lock access
+        final var slotList = slotsRepository.findAllSlotsByIdList(slotIds);
+        log.info("loaded slots with write access: {}", slotList);
+
+        // check slot is book meanwhile???
+        //  1 = booked
+        // -1 = maintenance time
+        slotList.stream()
+                .filter(slot -> slot.getStatus() == 1 || slot.getStatus() == -1)
+                .findAny()
+                .ifPresent(x -> {
+                    throw new BusinessException(CONFERENCE_ROOM_SLOT_BOOKED_ALREADY);
+                });
+
+
+        // change slot status = 1/booked
+        final var bookSlotList = slotList.stream()
                 .map(x -> {
                     x.setStatus(1);
                     return x;
@@ -127,17 +139,47 @@ public class CreateBookingServiceImpl implements CreateBookingService {
                 .collect(Collectors.toList());
 
         // save all
-        slotsRepository.saveAll(updateSlotList);
-
-        return new SavedBookingCtx(optimalRoom, updateSlotList);
+        return slotsRepository.saveAll(bookSlotList);
     }
 
 
+    private RoomBookingHistory insertIntoBookingHistory(BookingCommand command,
+                                                        ConferenceRoom room,
+                                                        List<String> bookedSlotIds) {
+        var bookingHistory = new RoomBookingHistory();
+        bookingHistory.setConferenceRoom(room);
+        bookingHistory.setMeetingTitle(command.meetingTitle());
+        bookingHistory.setNoOfParticipants(command.numberOfParticipants());
+        bookingHistory.setStartTime(LocalDateTime.parse(command.meetingStartTime(), dateTimeFormatter));
+        bookingHistory.setEndTime(LocalDateTime.parse(command.meetingEndTime(), dateTimeFormatter));
+        bookingHistory.setContactNumber(command.requestorMobileNumber());
+        bookingHistory.setContactEmail(command.requestorEmail());
+        bookingHistory.setCreatedBy(command.requestorUserId());
+        bookingHistory.setSlotIds(bookedSlotIds);
+        var savedBooking = historyRepository.save(bookingHistory);
+        log.info("saved booking id: {}", savedBooking.getId());
 
-    @Data
-    @AllArgsConstructor
-    private static class SavedBookingCtx {
-        private ConferenceRoom bookedRoom;
-        private List<ConferenceRoomSlots> bookedSlots;
+        return savedBooking;
     }
+
+
+    private void validateBasic(BookingCommand command) {
+        final var meetingStartDateTime = LocalDateTime.parse(command.meetingStartTime(), dateTimeFormatter);
+        final var meetingEndDateTime = LocalDateTime.parse(command.meetingEndTime(), dateTimeFormatter);
+
+        final var todayDate = LocalDate.now(ZoneId.systemDefault());
+        if(todayDate.compareTo(meetingStartDateTime.toLocalDate()) != 0
+                || todayDate.compareTo(meetingEndDateTime.toLocalDate()) != 0)
+            throw new BusinessException(BOOKING_DATE_VALIDATION_FAILURE);
+
+        // past time
+        final var todayTime = LocalTime.now(ZoneId.systemDefault());
+        if(todayTime.isAfter(meetingStartDateTime.toLocalTime())
+                || todayTime.isAfter(meetingEndDateTime.toLocalTime()))
+            throw new BusinessException(BOOKING_TIME_VALIDATION_FAILURE);
+
+        if(meetingStartDateTime.toLocalTime().isAfter(meetingEndDateTime.toLocalTime()))
+            throw new BusinessException(START_TIME_END_TIME_FAILURE);
+    }
+
 }

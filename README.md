@@ -28,7 +28,7 @@ Features:
 * Java 17
 * Spring Boot
 * Maven
-* h2 Database
+* h2 Database - inMemory
 
 
 ## Project Structure

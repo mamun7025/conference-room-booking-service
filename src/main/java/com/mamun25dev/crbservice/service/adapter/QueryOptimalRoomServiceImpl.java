@@ -2,6 +2,7 @@ package com.mamun25dev.crbservice.service.adapter;
 
 import com.mamun25dev.crbservice.domain.ConferenceRoom;
 import com.mamun25dev.crbservice.dto.command.QueryOptimalRoomCommand;
+import com.mamun25dev.crbservice.exception.BusinessException;
 import com.mamun25dev.crbservice.repository.ConferenceRoomRepository;
 import com.mamun25dev.crbservice.service.QueryOptimalRoomService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+
+import static com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode.OVERLAP_WITH_MAINTENANCE_FAILURE;
 
 
 @Service
@@ -33,6 +36,15 @@ public class QueryOptimalRoomServiceImpl implements QueryOptimalRoomService {
 
     private boolean checkSlotsAvailableWithinRange(ConferenceRoom room, LocalTime startTime, LocalTime endTime) {
         final var slotList = querySlotServiceImpl.query(room, startTime, endTime);
+
+        // validation: maintenance time overlap
+        slotList.stream()
+                .filter(x -> x.getStatus() == -1)
+                .findAny()
+                .ifPresent(x -> {
+                    throw new BusinessException(OVERLAP_WITH_MAINTENANCE_FAILURE);
+                });
+
         return slotList.stream()
                 .allMatch(x -> x.getStatus() == 0);
     }

@@ -13,14 +13,13 @@ meetingEndTime   = 2020-06-12 10:15
 
 
 
-validate overlap with maintenance time
-validate minimum people ---------------------------> done
-validate start time is less then end time
-check valid interval
 
 
-lock slots by ID >>> pessimistic lock
-
+lock slots by ID >>> pessimistic lock --------------> done
+validate minimum people ----------------------------> done
+validate overlap with maintenance time -------------> done
+future date validation -----------------------------> done
+past time validation -------------------------------> done
+validate start time is less then end time ----------> done
 
 Add swagger API documentation
-

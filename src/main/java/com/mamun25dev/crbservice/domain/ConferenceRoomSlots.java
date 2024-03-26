@@ -41,4 +41,13 @@ public class ConferenceRoomSlots {
     public LocalTime getSlotEndTime(){
         return LocalTime.parse(slotTimeWindow.split("-")[1]);
     }
+
+    @Override
+    public String toString() {
+        return "ConferenceRoomSlots{" +
+                "id=" + id +
+                ", slotTimeWindow='" + slotTimeWindow + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }

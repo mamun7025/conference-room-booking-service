@@ -5,7 +5,6 @@ import com.mamun25dev.crbservice.dto.AvailableRoom;
 import com.mamun25dev.crbservice.dto.SlotInfo;
 import com.mamun25dev.crbservice.dto.command.QueryCommand;
 import com.mamun25dev.crbservice.exception.BusinessException;
-import com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode;
 import com.mamun25dev.crbservice.repository.ConferenceRoomRepository;
 import com.mamun25dev.crbservice.service.QueryAvailableRoomService;
 import com.mamun25dev.crbservice.service.QuerySlotService;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import static com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode.CONFERENCE_ROOM_NOT_AVAILABLE_IN_RANGE;
 
 @Slf4j
 @Service
@@ -41,7 +41,7 @@ public class QueryAvailableRoomServiceImpl implements QueryAvailableRoomService 
         // no room business validation
         availableRoomSlots.stream()
                 .findAny()
-                .orElseThrow(() -> new BusinessException(ConferenceRoomErrorCode.ROOM_NOT_AVAILABLE));
+                .orElseThrow(() -> new BusinessException(CONFERENCE_ROOM_NOT_AVAILABLE_IN_RANGE));
 
         return availableRoomSlots;
     }
