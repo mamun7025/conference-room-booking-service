@@ -62,6 +62,7 @@ public class TestUtils {
         room1.setCode("501");
         room1.setCapacity(3);
         room1.setSlotInterval(15);
+        room1.setWorkingHourWindow("09:00-18:00");
 
         var roomSlot1 = new ConferenceRoomSlots();
         roomSlot1.setConferenceRoom(room1);
@@ -118,6 +119,7 @@ public class TestUtils {
         room2.setCode("502");
         room2.setCapacity(5);
         room2.setSlotInterval(15);
+        room2.setWorkingHourWindow("09:00-18:00");
 
         var roomSlot4 = new ConferenceRoomSlots();
         roomSlot4.setConferenceRoom(room2);
