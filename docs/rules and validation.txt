@@ -20,3 +20,7 @@ check valid interval
 
 
 lock slots by ID >>> pessimistic lock
+
+
+Add swagger API documentation
+

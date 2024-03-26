@@ -1,17 +1,18 @@
 package com.mamun25dev.crbservice.service.adapter;
 
 import com.mamun25dev.crbservice.domain.ConferenceRoom;
-import com.mamun25dev.crbservice.domain.ConferenceRoomSlots;
 import com.mamun25dev.crbservice.dto.AvailableRoom;
 import com.mamun25dev.crbservice.dto.SlotInfo;
 import com.mamun25dev.crbservice.dto.command.QueryCommand;
+import com.mamun25dev.crbservice.exception.BusinessException;
+import com.mamun25dev.crbservice.exception.ConferenceRoomErrorCode;
 import com.mamun25dev.crbservice.repository.ConferenceRoomRepository;
 import com.mamun25dev.crbservice.service.QueryAvailableRoomService;
+import com.mamun25dev.crbservice.service.QuerySlotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class QueryAvailableRoomServiceImpl implements QueryAvailableRoomService {
 
     private final ConferenceRoomRepository conferenceRoomRepository;
-    private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HHmm");
+    private final QuerySlotService querySlotService;
 
     @Override
     public List<AvailableRoom> query(QueryCommand queryCommand) {
@@ -37,36 +38,33 @@ public class QueryAvailableRoomServiceImpl implements QueryAvailableRoomService 
                 .filter(Objects::nonNull)
                 .toList();
 
+        // no room business validation
+        availableRoomSlots.stream()
+                .findAny()
+                .orElseThrow(() -> new BusinessException(ConferenceRoomErrorCode.ROOM_NOT_AVAILABLE));
+
         return availableRoomSlots;
     }
 
     private AvailableRoom mapToAvailableRoomCtx(ConferenceRoom conferenceRoom,
                                                 LocalTime lkpStartTime, LocalTime lkpEndTime) {
 
-        final var allSlots = conferenceRoom.getRoomSlots();
         // sorted slots for this room
-        final var sortedAllSlotsMap = allSlots
-                .stream()
-                .sorted(Comparator.comparing(x  -> x.getSlotStartTime()))
-                .collect(Collectors.toMap(x -> x.getSlotStartTime().format(timeFormat), x -> x, (k1, k2) -> k1, LinkedHashMap::new));
+        final var sortedSlotList = querySlotService.query(conferenceRoom, lkpStartTime, lkpEndTime);
 
 
-        int startKeyLkp = Integer.parseInt(lkpStartTime.format(timeFormat));
-        int endKeyLkp = Integer.parseInt(lkpEndTime.format(timeFormat));
-        int keyInterval = conferenceRoom.getSlotInterval();
+        boolean allSlotAvailable = sortedSlotList.stream()
+                .allMatch(slot -> slot.getStatus() == 0);
 
-        List<SlotInfo> availableSlots = new ArrayList<>();
-        boolean allSlotAvailable = true;
-        for (int lkpKey = startKeyLkp; lkpKey < endKeyLkp; ){
-            if(!isSlotAvailable(lkpKey, sortedAllSlotsMap)){
-                allSlotAvailable = false;
-                break;
-            }
-            addInSlotInfoList(availableSlots, lkpKey, sortedAllSlotsMap);
-            lkpKey = getNextLookupKey(keyInterval, lkpKey);
-        }
+        if(allSlotAvailable){
+            var availableSlots = sortedSlotList.stream()
+                    .map(slot -> SlotInfo.builder()
+                            .id(slot.getId())
+                            .slotWindow(slot.getSlotTimeWindow())
+                            .status(slot.getStatus())
+                            .build())
+                    .collect(Collectors.toList());
 
-        if (allSlotAvailable){
             return AvailableRoom.builder()
                     .id(conferenceRoom.getId())
                     .name(conferenceRoom.getName())
@@ -76,28 +74,6 @@ public class QueryAvailableRoomServiceImpl implements QueryAvailableRoomService 
                     .build();
         }
         return null;
-    }
-
-    private int getNextLookupKey(int keyInterval, int lkpKey) {
-        var lkpKeyTime = LocalTime.parse(String.valueOf(lkpKey), timeFormat);
-        return Integer.parseInt(lkpKeyTime.plusMinutes(keyInterval).format(timeFormat));
-    }
-
-    private boolean isSlotAvailable(int lkpKey, LinkedHashMap<String, ConferenceRoomSlots> sortedSlotsMap){
-        var lookupSlot = sortedSlotsMap.get(String.valueOf(lkpKey));
-        return lookupSlot.getStatus() == 0;
-    }
-
-    private void addInSlotInfoList(List<SlotInfo> availableSlots, int lkpKey,
-                                   LinkedHashMap<String, ConferenceRoomSlots> sortedAllSlotsMap) {
-        var slotInst =  sortedAllSlotsMap.get(String.valueOf(lkpKey));
-        availableSlots.add(
-                SlotInfo.builder()
-                        .id(slotInst.getId())
-                        .slotWindow(slotInst.getSlotTimeWindow())
-                        .status(slotInst.getStatus())
-                        .build()
-        );
     }
 
 }
