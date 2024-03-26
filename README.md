@@ -19,7 +19,7 @@ Features:
     + [Command Line](#install-virtualenv)
     + [Intellij IDEA](#install-virtualenv)
 * [Database & Schema Design](#install-python)
-* [API Documentation](#install-python)
+* [Swagger and API Docs](#install-python)
 * [Postman Collection](#run-backend-application)
 * [Test Case](#run-backend-application)
 * [Author](#enviorment-setup---frontend)
