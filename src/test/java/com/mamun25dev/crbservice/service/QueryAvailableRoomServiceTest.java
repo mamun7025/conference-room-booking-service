@@ -14,6 +14,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
+import java.time.Clock;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -30,6 +34,22 @@ public class QueryAvailableRoomServiceTest {
     @Spy
     private QuerySlotServiceImpl querySlotService;
 
+    private static final ZonedDateTime NOW = ZonedDateTime.of(
+            2024,
+            3,
+            26,
+            10,
+            0,
+            0,
+            0,
+            ZoneId.of("Asia/Dubai")
+    );
+
+    @BeforeEach
+    public void setup(){
+        final var clock = Clock.fixed(NOW.toInstant(), ZoneId.of("Asia/Dubai"));
+        ReflectionTestUtils.setField(queryAvailableRoomService, "clock", clock);
+    }
 
 
     @Test
@@ -99,7 +119,7 @@ public class QueryAvailableRoomServiceTest {
 
 
         // then
-        Assertions.assertEquals("CR-0001", exception.getErrorCode());
+        Assertions.assertEquals("CR-0002", exception.getErrorCode());
     }
 
 }

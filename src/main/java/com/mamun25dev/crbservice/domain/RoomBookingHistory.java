@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "ROOM_BOOKING_HISTORY")
+@EntityListeners(AuditingEntityListener.class)
 public class RoomBookingHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

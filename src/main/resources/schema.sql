@@ -57,13 +57,15 @@ CREATE TABLE IF NOT EXISTS ROOM_BOOKING_HISTORY
     ID                  BIGINT AUTO_INCREMENT PRIMARY KEY,
     CONFERENCE_ROOM_ID  BIGINT NOT NULL                  ,
     MEETING_TITLE       VARCHAR(255) NOT NULL            ,
-    CONATCT_NUMBER      VARCHAR(20) NOT NULL             ,
-    CONATCT_EMAIL       VARCHAR(20)                      ,
+    CONTACT_NUMBER      VARCHAR(20) NOT NULL             ,
+    CONTACT_EMAIL       VARCHAR(20)                      ,
     NO_OF_PARTICIPANTS  INT                              ,
     START_TIME          TIMESTAMP(6)                     ,
     END_TIME            TIMESTAMP(6)                     ,
     SLOT_IDS            VARCHAR(100) NOT NULL            ,
     CREATED_BY          VARCHAR(20) NOT NULL             ,
     CREATED_DATE        TIMESTAMP(6) WITH TIME ZONE      ,
+    LAST_MODIFIED_BY    VARCHAR(20)  NULL                ,
+    LAST_MODIFIED_DATE  TIMESTAMP(6) WITH TIME ZONE      ,
     CONSTRAINT FK_3_CONFERENCE_ROOM_ID FOREIGN KEY (CONFERENCE_ROOM_ID) REFERENCES CONFERENCE_ROOM (ID)
 );
