@@ -169,7 +169,7 @@ app:
 * Some other package excluded while running test cases which generally not require to test (Ex: configs, utils, dto)
 * JaCoCo tools added to publish test report
 * Snapshot of code coverage
-![](docs/Code-Coverage100Pct.png)
+![](docs/code-coverage100Pct.png)
 
 
 ## Authors
