@@ -160,6 +160,7 @@ app:
 ### Test case
 * Cover test case more than 96%
 * Some package excluded while running test cases which generally not require to test
+* Jacoco tools added to publish test case report
 * Add a picture for test coverage
 
 

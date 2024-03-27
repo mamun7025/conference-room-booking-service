@@ -167,4 +167,27 @@ public class QueryAvailableRoomServiceTest {
         Assertions.assertEquals(2, response.size());
     }
 
+    @Test
+    @Order(6)
+    @DisplayName("when query time range overlapped with maintenance time then should fail")
+    public void when_query_time_range_overlapped_with_maintenance_time_then_should_fail(){
+        // given
+        final var queryCommand = QueryCommand.builder()
+                .startTime("13:00")
+                .endTime("13:30")
+                .build();
+
+        List<ConferenceRoom> roomList = TestUtils.getRoomsWithSlots_overlapped();
+        Mockito.when(conferenceRoomRepository.findAll()).thenReturn(roomList);
+
+        // when
+        final var exception = Assertions.assertThrows(
+                BusinessException.class,
+                () -> queryAvailableRoomService.query(queryCommand));
+
+
+        // then
+        Assertions.assertEquals("CR-0004", exception.getErrorCode());
+    }
+
 }
