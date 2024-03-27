@@ -59,7 +59,7 @@ public class ConferenceRoomController {
         log.info("query request come from user: {} mobile number: {}",
                 loginUser.getUserId(), loginUser.getMobileNumber());
 
-        var queryCommand = QueryCommand.builder()
+        final var queryCommand = QueryCommand.builder()
                 .startTime(startTime)
                 .endTime(endTime)
                 .build();
@@ -91,7 +91,7 @@ public class ConferenceRoomController {
         log.info("booking request come from user: {} mobile number: {}",
                 loginUser.getUserId(), loginUser.getMobileNumber());
 
-        var bookingCommand = BookingCommand.builder()
+        final var bookingCommand = BookingCommand.builder()
                 .roomId(request.getRoomId())
                 .meetingTitle(request.getMeetingTitle())
                 .numberOfParticipants(request.getNumberOfParticipants())
