@@ -38,7 +38,7 @@ springdoc:
 app:
   time:
     zone-id: Asia/Dubai
-    override-testing-time: false
+    override-testing-time: true
     override-datetime-value: 2024-03-26 10:00
 
 
