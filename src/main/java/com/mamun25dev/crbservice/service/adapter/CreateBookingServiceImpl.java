@@ -75,6 +75,7 @@ public class CreateBookingServiceImpl implements CreateBookingService {
         return BookingDetails.builder()
                 .id(bookingHistory.getId())
                 .roomId(bookingHistory.getConferenceRoom().getId())
+                .roomName(bookingHistory.getConferenceRoom().getName())
                 .slotIds(bookedSlotIds)
                 .noOfParticipants(bookingHistory.getNoOfParticipants())
                 .meetingTitle(bookingHistory.getMeetingTitle())

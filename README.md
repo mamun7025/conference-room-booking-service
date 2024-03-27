@@ -142,15 +142,18 @@ http://localhost:8585/crb-service/v3/api-docs
 
 ## Postman collection
 > [!IMPORTANT]
-> Collection is valid for a fixed clock time
+> Postman collection is valid for a fixed clock time (fixed time: 2024-03-26 10:00 TZ: Asia/Dubai)
+* Create postman environment variable for service base URL
+```
+
+```
 * Postman collection link:
 
 
 ## Special instruction and Test case
 > [!IMPORTANT]
 > Special instruction
-* Use fixed clock time during test case execution (fixed time: 2024-03-26 10:00)
-* Postman collection is valid for a fixed clock time (fixed time: 2024-03-26 10:00)
+* Use fixed clock time during test case execution (fixed time: 2024-03-26 10:00 TZ: Asia/Dubai)
 * Application clock time is possible to control by configuration - only applicable for dev/test environment
 * Change following application.yml properties to control clock time
 ```
