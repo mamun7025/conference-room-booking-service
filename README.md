@@ -138,16 +138,15 @@ http://localhost:8585/crb-service/v3/api-docs
 
 
 * API Request and Response
--- add file here
+>Text file collection: https://github.com/mamun7025/conference-room-booking-service/blob/main/docs/api-request-response-doc.txt
 
 ## Postman collection
 > [!IMPORTANT]
 > Postman collection is valid for a fixed clock time (fixed time: 2024-03-26 10:00 TZ: Asia/Dubai)
-* Create postman environment variable for service base URL
-```
-
-```
 * Postman collection link:
+  >Collection: https://github.com/mamun7025/conference-room-booking-service/blob/main/docs/Coneference%20Room%20APIs.postman_collection.json
+  >
+  >Environment variable: https://github.com/mamun7025/conference-room-booking-service/blob/main/docs/conference-room-booking-env.postman_environment.json
 
 
 ## Special instruction and Test case
