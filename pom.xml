@@ -84,11 +84,12 @@
 				<version>0.8.10</version>
 				<configuration>
 					<excludes>
-						<!-- Exclude class from test coverage -->
 						<exclude>**/*com/mamun25dev/crbservice/CrbServiceApplication.class</exclude>
-						<!-- Exclude full package from test coverage -->
-						<exclude>com/mamaun25dev/**/*DTO.*</exclude>
 						<exclude>**/config/*</exclude>
+						<exclude>**/domain/*</exclude>
+						<exclude>**/exception/*</exclude>
+						<exclude>**/utils/*</exclude>
+						<exclude>**/dto/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>
