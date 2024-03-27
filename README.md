@@ -66,10 +66,10 @@ Import project in Intellij IDEA and run.
 ## Business validation and Exception handling
 ### Business validation
 Following business validation case is covered
-* Minimum participant
-* Overlap with maintenance time
+* Minimum number of participant
+* Overlapped with maintenance time
 * Optimal room search based on participants
-* Current data
+* Only current date
 * Start time is less then end time
 
 
