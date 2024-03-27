@@ -40,20 +40,24 @@ Features:
 
 ### 1. Pull docker image from docker hub
 Pull and run docker image from docker hub
-
-    docker pull mn7025/conference-room-service
-    docker run -p 8585:8585 --name conference-room-service-cnt mn7025/conference-room-service
+```
+docker pull mn7025/conference-room-service
+docker run -p 8585:8585 --name conference-room-service-cnt mn7025/conference-room-service
+```
 
 ### 2. Build and run docker image locally
-
-    mvn clean install
-    docker build -t conference-room-service .
-    docker run -p 8585:8585 --name conference-room-service-cnt conference-room-service
+```
+mvn clean install
+docker build -t conference-room-service .
+docker run -p 8585:8585 --name conference-room-service-cnt conference-room-service
+```
 
 ### 3. Run by using Intellij IDEA
 Clone project from github by following link.
 
-    https://github.com/mamun7025/conference-room-booking-service.git
+```
+https://github.com/mamun7025/conference-room-booking-service.git
+```
 
 Import project in Intellij IDEA and run.
 
@@ -73,11 +77,12 @@ Provide custom code
 ## Database, Schema Design and ERD
 * h2 in-memory database : to connect database use following properties
 
-
-        Browser URL: http://localhost:8585/crb-service/h2-console/
-        JDBC URL: jdbc:h2:file:./db/crb_dev_db;AUTO_SERVER=true
-        Username: sa
-        Password: root
+```
+Browser URL: http://localhost:8585/crb-service/h2-console/
+JDBC URL: jdbc:h2:file:./db/crb_dev_db;AUTO_SERVER=true
+Username: sa
+Password: root
+```
 
 * ERD Diagram
 ![](docs/ERD-Diagram.png)
@@ -98,9 +103,9 @@ Provide custom code
 
 ## Swagger / OpenAPI docs
 * Swagger UI
-
-        http://localhost:8585/crb-service/swagger-ui/index.html
-
+```
+http://localhost:8585/crb-service/swagger-ui/index.html
+```
 
 * OpenAPI docs
 ```
@@ -117,12 +122,13 @@ http://localhost:8585/crb-service/v3/api-docs
 
 ## Special instruction and Test case
 ### Special instruction
-* Some package excluded while running test cases which generally not require to test.
+* Some package excluded while running test cases which generally not require to test
 * Used fixed clock time during test case execution (fix time: 2024-03-26 10:00)
 * Application clock time possible to control through configuration - only applicable for dev/testing env
 
 
 ### Test case
+* Cover test case more than 96%
 * Add a picture for test coverage
 
 
