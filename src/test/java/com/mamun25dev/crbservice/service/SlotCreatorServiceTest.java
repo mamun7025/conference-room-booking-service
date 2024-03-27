@@ -5,6 +5,7 @@ import com.mamun25dev.crbservice.domain.MaintenanceSettings;
 import com.mamun25dev.crbservice.repository.ConferenceRoomRepository;
 import com.mamun25dev.crbservice.repository.ConferenceRoomSlotsRepository;
 import com.mamun25dev.crbservice.repository.MaintenanceSettingsRepository;
+import com.mamun25dev.crbservice.service.adapter.QuerySlotServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +30,7 @@ public class SlotCreatorServiceTest {
     @Mock
     private MaintenanceSettingsRepository maintenanceSettingsRepository;
     @Spy
-    private QuerySlotService querySlotService;
+    private QuerySlotServiceImpl querySlotService;
 
     @Test
     @DisplayName("create slots for room1 and room2")

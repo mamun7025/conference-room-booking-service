@@ -54,50 +54,45 @@ public class QueryAvailableRoomServiceTest {
 
     @Test
     @Order(1)
-    @DisplayName("query available conference room - return 1 room")
-    public void test_query_available_conference_room1(){
+    @DisplayName("when query available room by past time then should fail")
+    public void when_query_available_room_by_past_time_then_should_fail(){
         // given
         final var queryCommand = QueryCommand.builder()
-                .startTime("10:00")
-                .endTime("10:30")
+                .startTime("09:30")
+                .endTime("09:45")
                 .build();
 
-        List<ConferenceRoom> roomList = TestUtils.getRoomsWithSlots();
-        Mockito.when(conferenceRoomRepository.findAll()).thenReturn(roomList);
-
         // when
-        final var response = queryAvailableRoomService.query(queryCommand);
+        final var exception = Assertions.assertThrows(
+                BusinessException.class,
+                () -> queryAvailableRoomService.query(queryCommand));
 
 
         // then
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(1, response.size());
-
+        Assertions.assertEquals("CR-0006", exception.getErrorCode());
     }
 
 
     @Test
     @Order(2)
-    @DisplayName("query available conference room - return 2 room")
-    public void test_query_available_conference_room2(){
+    @DisplayName("when end time less than start time then should fail")
+    public void when_end_time_less_than_start_time_then_should_fail(){
         // given
         final var queryCommand = QueryCommand.builder()
-                .startTime("10:00")
-                .endTime("10:30")
+                .startTime("11:45")
+                .endTime("11:15")
                 .build();
 
-        List<ConferenceRoom> roomList = TestUtils.getRoomsWithSlots2Available();
-        Mockito.when(conferenceRoomRepository.findAll()).thenReturn(roomList);
-
         // when
-        final var response = queryAvailableRoomService.query(queryCommand);
+        final var exception = Assertions.assertThrows(
+                BusinessException.class,
+                () -> queryAvailableRoomService.query(queryCommand));
 
 
         // then
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(2, response.size());
-
+        Assertions.assertEquals("CR-0007", exception.getErrorCode());
     }
+
 
     @Test
     @Order(3)
@@ -120,6 +115,79 @@ public class QueryAvailableRoomServiceTest {
 
         // then
         Assertions.assertEquals("CR-0002", exception.getErrorCode());
+    }
+
+
+
+
+
+
+    @Test
+    @Order(4)
+    @DisplayName("query available conference room - return 1 room")
+    public void test_query_available_conference_room1(){
+        // given
+        final var queryCommand = QueryCommand.builder()
+                .startTime("10:00")
+                .endTime("10:30")
+                .build();
+
+        List<ConferenceRoom> roomList = TestUtils.getRoomsWithSlots();
+        Mockito.when(conferenceRoomRepository.findAll()).thenReturn(roomList);
+
+        // when
+        final var response = queryAvailableRoomService.query(queryCommand);
+
+
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(1, response.size());
+    }
+
+
+    @Test
+    @Order(5)
+    @DisplayName("query available conference room - return 2 room")
+    public void test_query_available_conference_room2(){
+        // given
+        final var queryCommand = QueryCommand.builder()
+                .startTime("10:00")
+                .endTime("10:30")
+                .build();
+
+        List<ConferenceRoom> roomList = TestUtils.getRoomsWithSlots2Available();
+        Mockito.when(conferenceRoomRepository.findAll()).thenReturn(roomList);
+
+        // when
+        final var response = queryAvailableRoomService.query(queryCommand);
+
+
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(2, response.size());
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("when query time range overlapped with maintenance time then should fail")
+    public void when_query_time_range_overlapped_with_maintenance_time_then_should_fail(){
+        // given
+        final var queryCommand = QueryCommand.builder()
+                .startTime("13:00")
+                .endTime("13:30")
+                .build();
+
+        List<ConferenceRoom> roomList = TestUtils.getRoomsWithSlots_overlapped();
+        Mockito.when(conferenceRoomRepository.findAll()).thenReturn(roomList);
+
+        // when
+        final var exception = Assertions.assertThrows(
+                BusinessException.class,
+                () -> queryAvailableRoomService.query(queryCommand));
+
+
+        // then
+        Assertions.assertEquals("CR-0004", exception.getErrorCode());
     }
 
 }

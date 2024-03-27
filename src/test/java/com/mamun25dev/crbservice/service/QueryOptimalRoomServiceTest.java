@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalTime;
 
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 public class QueryOptimalRoomServiceTest {
 
@@ -29,7 +30,8 @@ public class QueryOptimalRoomServiceTest {
     private ConferenceRoomRepository conferenceRoomRepository;
 
     @Test
-    @DisplayName("optimal room search test")
+    @Order(1)
+    @DisplayName("optimal room search")
     public void test_optimal_room_search(){
         // given
         final var searchCommand = QueryOptimalRoomCommand.builder()
@@ -51,7 +53,8 @@ public class QueryOptimalRoomServiceTest {
     }
 
     @Test
-    @DisplayName("test with maintenance overlapped time")
+    @Order(2)
+    @DisplayName("when optimal room search with maintenance overlapped time then should fail")
     public void test_with_maintenance_overlapped_time(){
         // given
         final var searchCommand = QueryOptimalRoomCommand.builder()

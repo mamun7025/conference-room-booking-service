@@ -58,8 +58,15 @@ public class QueryAvailableRoomServiceImpl implements QueryAvailableRoomService 
         // sorted slots for this room
         final var sortedSlotList = querySlotService.query(conferenceRoom, lkpStartTime, lkpEndTime);
 
+        // overlapped check
+        sortedSlotList.stream()
+                .filter(slot -> slot.getStatus() == -1)
+                .findAny()
+                .ifPresent(x -> {
+                    throw new BusinessException(OVERLAP_WITH_MAINTENANCE_FAILURE);
+                });
 
-        boolean allSlotAvailable = sortedSlotList.stream()
+        final boolean allSlotAvailable = sortedSlotList.stream()
                 .allMatch(slot -> slot.getStatus() == 0);
 
         if(allSlotAvailable){

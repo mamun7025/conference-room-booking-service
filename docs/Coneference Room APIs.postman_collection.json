@@ -1,0 +1,617 @@
+{
+	"info": {
+		"_postman_id": "1057a165-262a-427c-902d-dc007141615e",
+		"name": "Coneference Room APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8008749",
+		"_collection_link": "https://grey-space-387484.postman.co/workspace/c-projects~d865dcc6-65b3-4ff0-ad6d-8f4d4a7b6b5d/collection/8008749-1057a165-262a-427c-902d-dc007141615e?action=share&source=collection_link&creator=8008749"
+	},
+	"item": [
+		{
+			"name": "health check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/actuator/health",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "query available rooms",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/available?startTime=15:00&endTime=15:30",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"available"
+					],
+					"query": [
+						{
+							"key": "startTime",
+							"value": "15:00"
+						},
+						{
+							"key": "endTime",
+							"value": "15:30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "query available rooms - overlapped maintenance",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/available?startTime=13:00&endTime=13:15",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"available"
+					],
+					"query": [
+						{
+							"key": "startTime",
+							"value": "13:00"
+						},
+						{
+							"key": "endTime",
+							"value": "13:15"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room booking",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meetingTitle\": \"Retro Meeting\",\r\n    \"numberOfParticipants\": 7,\r\n    \"meetingStartTime\": \"2024-03-26 10:00\",\r\n    \"meetingEndTime\": \"2024-03-26 10:30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/booking",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room booking - with room id > 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomId\": 1,\r\n    \"meetingTitle\": \"Retro Meeting\",\r\n    \"numberOfParticipants\": 3,\r\n    \"meetingStartTime\": \"2024-03-26 10:00\",\r\n    \"meetingEndTime\": \"2024-03-26 10:30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/booking",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room booking - with room id > 3",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomId\": 3,\r\n    \"meetingTitle\": \"Retro Meeting\",\r\n    \"numberOfParticipants\": 10,\r\n    \"meetingStartTime\": \"2024-03-26 10:00\",\r\n    \"meetingEndTime\": \"2024-03-26 10:30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/booking",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room booking - with room id > 4",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomId\": 4,\r\n    \"meetingTitle\": \"Retro Meeting\",\r\n    \"numberOfParticipants\": 15,\r\n    \"meetingStartTime\": \"2024-03-26 10:00\",\r\n    \"meetingEndTime\": \"2024-03-26 10:30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/booking",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "query available rooms - no room response",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/available?startTime=10:00&endTime=10:15",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"available"
+					],
+					"query": [
+						{
+							"key": "startTime",
+							"value": "10:00"
+						},
+						{
+							"key": "endTime",
+							"value": "10:15"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room booking - overlap with maintenance",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meetingTitle\": \"Retro Meeting\",\r\n    \"numberOfParticipants\": 3,\r\n    \"meetingStartTime\": \"2024-03-26 13:00\",\r\n    \"meetingEndTime\": \"2024-03-26 13:30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/booking",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room booking - future date",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meetingTitle\": \"Retro Meeting\",\r\n    \"numberOfParticipants\": 3,\r\n    \"meetingStartTime\": \"2024-04-27 10:00\",\r\n    \"meetingEndTime\": \"2024-04-27 10:30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/booking",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room booking - past date",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meetingTitle\": \"Retro Meeting\",\r\n    \"numberOfParticipants\": 3,\r\n    \"meetingStartTime\": \"2024-03-26 09:30\",\r\n    \"meetingEndTime\": \"2024-03-26 10:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/booking",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room booking - End time less than Start time",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meetingTitle\": \"Retro Meeting\",\r\n    \"numberOfParticipants\": 3,\r\n    \"meetingStartTime\": \"2024-03-26 17:45\",\r\n    \"meetingEndTime\": \"2024-03-26 17:30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/booking",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room booking - meeting title blank",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meetingTitle\": \"\",\r\n    \"numberOfParticipants\": 7,\r\n    \"meetingStartTime\": \"2024-03-26 16:00\",\r\n    \"meetingEndTime\": \"2024-03-26 16:30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/booking",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "room booking - participants < 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-USER-ID",
+						"value": "10025",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-MOBILE",
+						"value": "0563489299",
+						"type": "text"
+					},
+					{
+						"key": "X-USER-EMAIL",
+						"value": "mamun7025@gmail.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"meetingTitle\": \"Retro Meeting\",\r\n    \"numberOfParticipants\": 1,\r\n    \"meetingStartTime\": \"2024-03-26 16:00\",\r\n    \"meetingEndTime\": \"2024-03-26 16:30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{CRB-SERVICE-URL}}/v1/api/conference-room/booking",
+					"host": [
+						"{{CRB-SERVICE-URL}}"
+					],
+					"path": [
+						"v1",
+						"api",
+						"conference-room",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
