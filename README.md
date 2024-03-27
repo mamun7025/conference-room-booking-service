@@ -66,11 +66,10 @@ Import project in Intellij IDEA and run.
 * h2 in-memory database : to connect database use following properties
 
 
-
-    Browser URL: http://localhost:8585/crb-service/h2-console/
-    JDBC URL: jdbc:h2:file:./db/crb_dev_db;AUTO_SERVER=true
-    Username: sa
-    Password: root
+        Browser URL: http://localhost:8585/crb-service/h2-console/
+        JDBC URL: jdbc:h2:file:./db/crb_dev_db;AUTO_SERVER=true
+        Username: sa
+        Password: root
 
 * ERD Diagram
 ![](docs/ERD-Diagram.png)
@@ -79,26 +78,26 @@ Import project in Intellij IDEA and run.
 * Tables with sample data
 ![](docs/schema-design-latest.png)
 
-* Seed SQL Scripts
+* Seed SQL scripts
+>> Schema File: https://github.com/mamun7025/conference-room-booking-service/blob/main/src/main/resources/schema.sql
+>> 
+>> Data File: https://github.com/mamun7025/conference-room-booking-service/blob/main/src/main/resources/data.sql
 
-add shema.sql and data.sql file here
+
+
 
 
 
 ## Swagger / OpenAPI docs
 * Swagger UI
 
-
-
-    http://localhost:8585/crb-service/swagger-ui/index.html
-
+        http://localhost:8585/crb-service/swagger-ui/index.html
 
 
 * OpenAPI docs
 
 
-
-    http://localhost:8585/crb-service/v3/api-docs
+        http://localhost:8585/crb-service/v3/api-docs
 
 
 * Snapshot
