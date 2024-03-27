@@ -53,7 +53,7 @@ docker run -p 8585:8585 --name conference-room-service-cnt conference-room-servi
 ```
 
 ### 3. Run by using Intellij IDEA
-Clone project from github by following link.
+Clone the project from github by the following link.
 
 ```
 https://github.com/mamun7025/conference-room-booking-service.git
@@ -66,7 +66,7 @@ Import project in Intellij IDEA and run.
 ## Business validation and Exception handling
 ### Business validation
 Following business validation case is covered
-* Minimum number of participant
+* Minimum number of participants
 * Overlapped with maintenance time
 * Optimal room search based on participants
 * Only current date
@@ -141,13 +141,17 @@ http://localhost:8585/crb-service/v3/api-docs
 -- add file here
 
 ## Postman collection
+> [!IMPORTANT]
+> Collection is valid for a fixed clock time
+* Postman collection link:
 
 
 ## Special instruction and Test case
-### Special instruction
+> [!IMPORTANT]
+> Special instruction
 * Use fixed clock time during test case execution (fixed time: 2024-03-26 10:00)
-* Postman collection is valid for a fix clock time (fixed time: 2024-03-26 10:00)
-* Application clock time possible to control through configuration - only applicable for dev/testing env
+* Postman collection is valid for a fixed clock time (fixed time: 2024-03-26 10:00)
+* Application clock time is possible to control by configuration - only applicable for dev/test environment
 * Change following application.yml properties to control clock time
 ```
 app:
@@ -158,10 +162,11 @@ app:
 ```
 
 ### Test case
-* Cover test case more than 96%
-* Some package excluded while running test cases which generally not require to test
-* Jacoco tools added to publish test case report
-* Add a picture for test coverage
+* 100% unit test case covered in service and controller layer
+* Some other package excluded while running test cases which generally not require to test (Ex: configs, utils, dto)
+* JaCoCo tools added to publish test report
+* Snapshot of code coverage
+![](docs/Code-Coverage100Pct.png)
 
 
 ## Authors
