@@ -14,7 +14,7 @@ Features:
 ## Table of contents
 * [Technology Stack](#technology-stack)
 * [Project Structure](#project-structure)
-* [Build and Run Project - 3 ways](#build-and-run-project-3ways)
+* [Build and Run Project - 3 ways](#build-and-run-project---3-ways)
     + [Pull docker image from docker hub](#pull-docker-image-from-docker-hub)
     + [Build and run docker image locally](#build-and-run-docker-image-locally)
     + [By Intellij IDEA](#by-intellij-idea)
