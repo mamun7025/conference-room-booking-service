@@ -15,15 +15,15 @@ Features:
 * [Technology Stack](#technology-stack)
 * [Project Structure](#project-structure)
 * [Build and Run Project - 3 ways](#build-and-run-project---3-ways)
-    + [Pull docker image from docker hub](#pull-docker-image-from-docker-hub)
-    + [Build and run docker image locally](#build-and-run-docker-image-locally)
-    + [By Intellij IDEA](#by-intellij-idea)
+    + [Pull docker image from docker hub](#1-pull-docker-image-from-docker-hub)
+    + [Build and run docker image locally](#2-build-and-run-docker-image-locally)
+    + [By Intellij IDEA](#3-run-by-using-intellij-idea)
 * [Business validation and Exception handling](#business-validation-and-exception-handling)
 * [Database, Schema Design and ERD](#database-schema-design-and-erd)
 * [Swagger / OpenAPI docs](#swagger-/-openapi-docs)
 * [Postman collection](#postman-collection)
 * [Special instruction and Test case](#special-instruction-and-test-case)
-* [Author](#author)
+* [Author](#authors)
 
 ## Technology Stack
 * Java 17
@@ -60,6 +60,14 @@ Import project in Intellij IDEA and run.
 
 
 ## Business validation and Exception handling
+lock slots by ID >>> pessimistic lock
+validate minimum people
+validate overlap with maintenance time
+future date validation
+past time validation
+validate start time is less then end time 
+Manage custom clock for testing..... -------> done
+Provide custom code
 
 
 ## Database, Schema Design and ERD
@@ -95,10 +103,9 @@ Import project in Intellij IDEA and run.
 
 
 * OpenAPI docs
-
-
-        http://localhost:8585/crb-service/v3/api-docs
-
+```
+http://localhost:8585/crb-service/v3/api-docs
+```
 
 * Snapshot
 ![](docs/Swagger-API.png)
@@ -109,7 +116,15 @@ Import project in Intellij IDEA and run.
 
 
 ## Special instruction and Test case
+### Special instruction
 * Some package excluded while running test cases which generally not require to test.
 * Used fixed clock time during test case execution (fix time: 2024-03-26 10:00)
 * Application clock time possible to control through configuration - only applicable for dev/testing env
+
+
+### Test case
 * Add a picture for test coverage
+
+
+## Authors
+- [Al-Mamun](https://github.com/mamun7025)

@@ -21,31 +21,8 @@ validate overlap with maintenance time -------------> done
 future date validation -----------------------------> done
 past time validation -------------------------------> done
 validate start time is less then end time ----------> done
-
-Add swagger API documentation
-http://localhost:8585/crb-service/v3/api-docs
-http://localhost:8585/crb-service/swagger-ui/index.html
+>>>>>>> Manage custom clock for testing..... -------> done
 
 
-Configureable system - room oprration hour
-Special instrauction for test case
 Some test case might fail if test in maintenance timeframe
 9:15, 13:15, 17:15
-
-
-
-
->>>>>>> Manage custom clock for testing.....
-
->>>> create ERD diagram by intelij
-
-Schema Design and ERD Diagram
-Schema Design
-ERD Diagram
-Sample data example
-
-
-Run 3way
-- Pull Dcoker Image from DockerHub
-- Build and Run docker imame locally
-- Run by Intelij
