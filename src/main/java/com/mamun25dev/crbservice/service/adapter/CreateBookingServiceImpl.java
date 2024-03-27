@@ -43,7 +43,7 @@ public class CreateBookingServiceImpl implements CreateBookingService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public BookingDetails create(BookingCommand command) {
-        // basic validation
+
         validateBasic(command);
 
         // find conference room
